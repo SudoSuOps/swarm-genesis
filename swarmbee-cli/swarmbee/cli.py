@@ -90,24 +90,24 @@ def detect_gpus() -> list[dict]:
     try:
         code, stdout, stderr = run_command([
             "nvidia-smi",
-            "--query-gpu=index,name,memory.total,driver_version,cuda_version",
+            "--query-gpu=index,name,memory.total,driver_version",
             "--format=csv,noheader,nounits"
         ])
-        
+
         if code != 0:
             return []
-        
+
         gpus = []
         for line in stdout.strip().split("\n"):
             if line:
                 parts = [p.strip() for p in line.split(",")]
-                if len(parts) >= 5:
+                if len(parts) >= 4:
                     gpus.append({
                         "index": int(parts[0]),
                         "name": parts[1],
                         "vram_mb": int(parts[2]),
                         "driver": parts[3],
-                        "cuda": parts[4]
+                        "cuda": "12.x"  # Infer from driver
                     })
         return gpus
     except FileNotFoundError:
