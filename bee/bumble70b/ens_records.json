@@ -1,0 +1,18 @@
+{
+  "ens": "bumble70b.swarmbee.eth",
+  "records": {
+    "role": "bee.compute.worker",
+    "class": "heavy.lifter",
+    "model": "med42-70b+queenbee-spine",
+    "method": "k7-self-consistency",
+    "gpu": "rtx5090x4",
+    "epoch": "0",
+    "status": "active",
+    "last_commit": "ada6fe2",
+    "confidence": "calibrated",
+    "attestation": "sovereign.compute.no-cloud",
+    "pubkey": "ed25519:AAAAC3NzaC1lZDI1NTE5AAAAIMXIhwuwTa91b9gAHV2t0+jQG4wJZxdVYisbwAq/uPOe"
+  },
+  "record_count": 11,
+  "updated": "2025-12-31T19:45:00Z"
+}
