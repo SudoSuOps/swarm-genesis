@@ -1,0 +1,21 @@
+# SwarmBee Worker Requirements
+
+# Core
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+httpx>=0.26.0
+redis>=5.0.0
+
+# Medical AI
+monai[all]>=1.3.0
+nibabel>=5.2.0
+pydicom>=2.4.0
+pillow>=10.2.0
+
+# PDF Generation
+reportlab>=4.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+numpy>=1.26.0
