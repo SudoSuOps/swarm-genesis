@@ -1,0 +1,28 @@
+# Bumble70B Worker Dependencies
+# Level Up Edition
+
+# Core
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+httpx>=0.25.0
+pydantic>=2.5.0
+
+# Redis
+redis>=5.0.0
+
+# Metrics
+prometheus-client>=0.18.0
+
+# Async
+aiohttp>=3.9.0
+
+# MONAI (for medical imaging)
+# monai>=1.3.0
+# torch>=2.1.0
+
+# PDF generation (optional)
+# reportlab>=4.0.0
+# weasyprint>=60.0
+
+# Crypto (for receipts)
+# cryptography>=41.0.0

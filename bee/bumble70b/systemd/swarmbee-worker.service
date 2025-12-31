@@ -1,0 +1,58 @@
+[Unit]
+Description=SwarmBee Bumble70B Worker
+Documentation=https://github.com/SudoSuOps/swarm-genesis
+After=network-online.target redis.service
+Wants=network-online.target
+Requires=redis.service
+
+[Service]
+Type=simple
+User=ai
+Group=ai
+WorkingDirectory=/home/ai/swarm-genesis/bee/bumble70b/worker
+
+# Environment
+Environment=PYTHONPATH=/home/ai/swarm-genesis/bee/bumble70b/worker
+Environment=WORKER_ENS=bumble70b.swarmbee.eth
+Environment=REDIS_URL=redis://localhost:6379
+Environment=QUEENBEE_URL=http://localhost:8000
+Environment=CONTROLLER_URL=http://localhost:8001
+Environment=OUTPUT_DIR=/home/ai/swarm-genesis/data/outputs
+Environment=LOG_DIR=/home/ai/swarm-genesis/logs
+Environment=RECEIPTS_DIR=/home/ai/swarm-genesis/receipts
+Environment=WORKER_KEY_PATH=/home/ai/swarmos/bee/bumble70b/bee_key
+
+# Optional: Discord/Telegram alerts
+# Environment=DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+# Environment=TELEGRAM_BOT_TOKEN=...
+# Environment=TELEGRAM_CHAT_ID=...
+
+# Python virtual environment
+ExecStart=/home/ai/swarm-genesis/swarmos-backend/venv/bin/python -m uvicorn worker:app --host 0.0.0.0 --port 8080
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+# Resource limits
+LimitNOFILE=65535
+LimitNPROC=4096
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ai/swarm-genesis/data
+ReadWritePaths=/home/ai/swarm-genesis/logs
+ReadWritePaths=/home/ai/swarm-genesis/receipts
+ReadWritePaths=/tmp
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=swarmbee-worker
+
+[Install]
+WantedBy=multi-user.target

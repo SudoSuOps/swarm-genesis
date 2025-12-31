@@ -1,0 +1,68 @@
+# Prometheus Configuration for Bumble70B Worker
+# SwarmOS Sovereign Compute Infrastructure
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'swarmos'
+    env: 'production'
+
+# Alerting (optional - configure Alertmanager if needed)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093
+
+# Rule files (optional)
+# rule_files:
+#   - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Bumble70B Worker
+  - job_name: 'swarmos-worker'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+        labels:
+          worker: 'bumble70b.swarmbee.eth'
+          model: 'queenbee-spine'
+          gpu_count: '2'
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # QueenBee API (if it exposes metrics)
+  - job_name: 'queenbee'
+    static_configs:
+      - targets: ['host.docker.internal:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Bee-1 Controller (if it exposes metrics)
+  - job_name: 'bee1-controller'
+    static_configs:
+      - targets: ['host.docker.internal:8001']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Redis exporter (optional - add redis_exporter container if needed)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']
+
+  # Node exporter (optional - for system metrics)
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']
+
+  # NVIDIA GPU exporter (optional)
+  # - job_name: 'nvidia-gpu'
+  #   static_configs:
+  #     - targets: ['dcgm-exporter:9400']
