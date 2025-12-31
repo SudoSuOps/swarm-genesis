@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bumble70B | SwarmOS Bee Card</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        .card {
+            background: linear-gradient(145deg, #16161a 0%, #1e1e24 100%);
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        .bee-icon {
+            font-size: 48px;
+        }
+        .title {
+            flex: 1;
+        }
+        .title h1 {
+            font-size: 24px;
+            color: #f5c542;
+            margin-bottom: 4px;
+        }
+        .title .ens {
+            font-size: 12px;
+            color: #888;
+        }
+        .status {
+            background: #10b981;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .field {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a24;
+        }
+        .field:last-child {
+            border-bottom: none;
+        }
+        .field-label {
+            color: #888;
+            font-size: 13px;
+        }
+        .field-value {
+            color: #fff;
+            font-size: 13px;
+            text-align: right;
+        }
+        .field-value.highlight {
+            color: #f5c542;
+        }
+        .field-value.green {
+            color: #10b981;
+        }
+        .pubkey-box {
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 10px;
+            word-break: break-all;
+            color: #10b981;
+            line-height: 1.6;
+        }
+        .commits {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .commit {
+            background: #1a1a24;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+        .commit code {
+            color: #f5c542;
+        }
+        .attestation {
+            background: linear-gradient(90deg, #1a1a24, #0a0a0f);
+            border: 1px solid #f5c542;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        .attestation-text {
+            font-size: 14px;
+            color: #f5c542;
+            font-weight: bold;
+        }
+        .attestation-sub {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+        .footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #2a2a3a;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #444;
+        }
+        .footer a {
+            color: #666;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #f5c542;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="bee-icon">🐝</div>
+            <div class="title">
+                <h1>Bumble70B</h1>
+                <div class="ens">bumble70b.swarmbee.eth</div>
+            </div>
+            <div class="status">Active</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Identity</div>
+            <div class="field">
+                <span class="field-label">Role</span>
+                <span class="field-value">bee.compute.worker</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Class</span>
+                <span class="field-value highlight">heavy.lifter</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Epoch</span>
+                <span class="field-value">0</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Compute</div>
+            <div class="field">
+                <span class="field-label">Model</span>
+                <span class="field-value">med42-70b+queenbee-spine</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Method</span>
+                <span class="field-value">k7-self-consistency</span>
+            </div>
+            <div class="field">
+                <span class="field-label">GPU</span>
+                <span class="field-value highlight">rtx5090x4</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Confidence</span>
+                <span class="field-value green">calibrated</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Public Key (ED25519)</div>
+            <div class="pubkey-box">
+                ed25519:AAAAC3NzaC1lZDI1NTE5AAAAIMXIhwuwTa91b9gAHV2t0+jQG4wJZxdVYisbwAq/uPOe
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Commit History</div>
+            <div class="commits">
+                <div class="commit"><code>2fc99aa</code> genesis</div>
+                <div class="commit"><code>ada6fe2</code> live-inference</div>
+                <div class="commit"><code>c9dd475</code> bee-rename</div>
+                <div class="commit"><code>fd11307</code> on-chain-id</div>
+                <div class="commit"><code>58302cb</code> epoch-0</div>
+            </div>
+        </div>
+
+        <div class="attestation">
+            <div class="attestation-text">sovereign.compute.no-cloud</div>
+            <div class="attestation-sub">Your data never leaves the swarm.</div>
+        </div>
+
+        <div class="footer">
+            <span>SwarmOS Epoch 0 • NYE 2025</span>
+            <span>
+                <a href="https://github.com/SudoSuOps/swarm-genesis" target="_blank">GitHub</a> •
+                <a href="https://huggingface.co/Trustcat/swarm-genesis" target="_blank">HuggingFace</a>
+            </span>
+        </div>
+    </div>
+</body>
+</html>
