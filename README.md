@@ -1,6 +1,8 @@
 # SwarmPool Genesis
 
-Decentralized AI compute mining pool. Sovereign miners, IPFS-backed job mempool, trustless settlement.
+**Sovereign Compute Pool** settled via IPFS.
+
+> Jobs are visible. Miners choose. Proof settles.
 
 ## Architecture
 
