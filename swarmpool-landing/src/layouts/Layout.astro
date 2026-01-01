@@ -1,0 +1,140 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Decentralized AI Inference Mining Pool - Earn rewards for GPU compute" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>{title} | SwarmPool</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} | SwarmPool`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://swarmpool.eth.limo" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | SwarmPool`} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body class="min-h-screen">
+    <div class="matrix-bg"></div>
+
+    <!-- Header -->
+    <header class="border-b border-[--color-border] bg-[--color-bg-dark]/90 backdrop-blur-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="flex items-center gap-3 group">
+            <div class="text-2xl">🏊</div>
+            <div>
+              <span class="text-xl font-bold glow-text">SWARMPOOL</span>
+              <span class="text-[--color-text-dim] text-sm">.eth</span>
+            </div>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="/" class="hover:glow-text transition-all">Dashboard</a>
+            <a href="/miners" class="hover:glow-text transition-all">Miners</a>
+            <a href="/epochs" class="hover:glow-text transition-all">Epochs</a>
+            <a href="/docs" class="hover:glow-text transition-all">Docs</a>
+          </nav>
+
+          <div class="flex items-center gap-3">
+            <span id="live-indicator" class="tag tag-live pulse hidden">
+              <span class="inline-block w-2 h-2 rounded-full bg-[--color-green] mr-2"></span>
+              LIVE
+            </span>
+            <a href="/miners#join" class="btn-primary text-sm hidden sm:block">
+              Join Pool →
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[--color-border] mt-16">
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="text-xl">🏊</span>
+              <span class="font-bold glow-text">SWARMPOOL</span>
+            </div>
+            <p class="text-sm text-[--color-text-dim]">
+              Decentralized AI inference mining pool. Earn rewards for GPU compute.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-[--color-green] text-sm font-medium mb-3">Pool</h4>
+            <ul class="space-y-2 text-sm text-[--color-text-dim]">
+              <li><a href="/" class="hover:text-[--color-green]">Dashboard</a></li>
+              <li><a href="/miners" class="hover:text-[--color-green]">Miners</a></li>
+              <li><a href="/epochs" class="hover:text-[--color-green]">Epochs</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-[--color-green] text-sm font-medium mb-3">Resources</h4>
+            <ul class="space-y-2 text-sm text-[--color-text-dim]">
+              <li><a href="/docs" class="hover:text-[--color-green]">Documentation</a></li>
+              <li><a href="https://github.com/SudoSuOps/swarm-genesis" class="hover:text-[--color-green]">GitHub</a></li>
+              <li><a href="/docs#api" class="hover:text-[--color-green]">API Reference</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-[--color-green] text-sm font-medium mb-3">Community</h4>
+            <ul class="space-y-2 text-sm text-[--color-text-dim]">
+              <li><a href="#" class="hover:text-[--color-green]">Discord</a></li>
+              <li><a href="#" class="hover:text-[--color-green]">Twitter</a></li>
+              <li><a href="#" class="hover:text-[--color-green]">Telegram</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-[--color-border] mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-sm text-[--color-text-dim]">
+            © 2025 SwarmPool. Decentralized AI Compute.
+          </p>
+          <div class="flex items-center gap-4 text-sm text-[--color-text-dim]">
+            <span>swarmpool.eth</span>
+            <span>|</span>
+            <a href="https://etherscan.io" class="hover:text-[--color-green]">Etherscan</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Show live indicator when data is loading
+      document.addEventListener('DOMContentLoaded', () => {
+        const indicator = document.getElementById('live-indicator');
+        if (indicator) {
+          indicator.classList.remove('hidden');
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,259 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Documentation" description="SwarmPool technical documentation and API reference">
+  <!-- Header -->
+  <section class="py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">
+        <span class="glow-text">Documentation</span>
+      </h1>
+      <p class="text-lg text-[--color-text-dim] max-w-2xl mx-auto">
+        Technical docs for miners, clients, and developers.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a href="#miners" class="terminal-box p-6 hover:border-[--color-green] transition-colors">
+          <div class="text-2xl mb-3">Mining</div>
+          <p class="text-sm text-[--color-text-dim]">GPU setup, model download, earnings</p>
+        </a>
+        <a href="#clients" class="terminal-box p-6 hover:border-[--color-green] transition-colors">
+          <div class="text-2xl mb-3">Clients</div>
+          <p class="text-sm text-[--color-text-dim]">Submit jobs, manage deposits, get results</p>
+        </a>
+        <a href="#api" class="terminal-box p-6 hover:border-[--color-green] transition-colors">
+          <div class="text-2xl mb-3">API</div>
+          <p class="text-sm text-[--color-text-dim]">REST endpoints, IPFS state, verification</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 id="architecture" class="text-2xl font-bold glow-text mb-6">Architecture</h2>
+
+      <div class="terminal-box-dim p-6 mb-6">
+        <pre class="text-sm text-[--color-green] overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────┐
+│                        SWARMPOOL                                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────┐     ┌──────────────┐     ┌──────────────┐        │
+│  │ CLIENTS  │────▶│  POOL STATE  │◀────│   MINERS     │        │
+│  │          │     │   (IPFS)     │     │              │        │
+│  │ Submit   │     │              │     │ Claim jobs   │        │
+│  │ jobs     │     │ • Jobs queue │     │ Run inference│        │
+│  │          │     │ • Miners     │     │ Submit proofs│        │
+│  └──────────┘     │ • Epochs     │     └──────────────┘        │
+│       │           └──────────────┘            │                 │
+│       │                  │                    │                 │
+│       ▼                  ▼                    ▼                 │
+│  ┌──────────────────────────────────────────────────────┐      │
+│  │                   SETTLEMENT LAYER                    │      │
+│  │                                                       │      │
+│  │  • Epoch sealing (Merkle roots)                      │      │
+│  │  • Payout proofs                                     │      │
+│  │  • USDC distribution (75% miners / 25% ops)          │      │
+│  └──────────────────────────────────────────────────────┘      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+        </pre>
+      </div>
+
+      <div class="prose prose-invert max-w-none">
+        <p class="text-[--color-text-dim]">
+          SwarmPool uses IPFS as a decentralized mempool for job coordination. No central server is required
+          for the core protocol - state is published to IPFS and can be verified by anyone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Miners Section -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 id="miners" class="text-2xl font-bold glow-text mb-6">For Miners</h2>
+
+      <div class="space-y-6">
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Installation</h3>
+          <div class="code-block">
+            <code class="text-[--color-green]"># Install from PyPI</code><br/>
+            <code class="text-[--color-green]">pip install swarmpool-miner</code><br/><br/>
+            <code class="text-[--color-text-dim]"># Or from source</code><br/>
+            <code class="text-[--color-green]">git clone https://github.com/SudoSuOps/swarm-genesis</code><br/>
+            <code class="text-[--color-green]">cd swarm-genesis/swarmpool-miner</code><br/>
+            <code class="text-[--color-green]">pip install -e .</code>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Configuration</h3>
+          <div class="code-block">
+            <code class="text-[--color-text-dim]"># ~/.swarmpool/config.json</code><br/>
+            <code class="text-[--color-green]">{`{
+  "ens": "yourname.swarmbee.eth",
+  "pool_state_cid": "latest",
+  "models_dir": "~/.swarmpool/models",
+  "gpu_devices": [0, 1],
+  "log_level": "info"
+}`}</code>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Commands</h3>
+          <table class="terminal-table text-sm">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>swarmpool mine</code></td>
+                <td>Start mining (claim and complete jobs)</td>
+              </tr>
+              <tr>
+                <td><code>swarmpool status</code></td>
+                <td>Show current mining status</td>
+              </tr>
+              <tr>
+                <td><code>swarmpool earnings</code></td>
+                <td>Show earnings for current epoch</td>
+              </tr>
+              <tr>
+                <td><code>swarmpool models list</code></td>
+                <td>List available models</td>
+              </tr>
+              <tr>
+                <td><code>swarmpool models download</code></td>
+                <td>Download model weights</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Section -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 id="clients" class="text-2xl font-bold glow-text mb-6">For Clients</h2>
+
+      <div class="space-y-6">
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Submit Jobs</h3>
+          <div class="code-block">
+            <code class="text-[--color-green]"># Install client CLI</code><br/>
+            <code class="text-[--color-green]">pip install swarmpool-client</code><br/><br/>
+            <code class="text-[--color-green]"># Deposit funds</code><br/>
+            <code class="text-[--color-green]">swarmpool deposit --amount 10.00</code><br/><br/>
+            <code class="text-[--color-green]"># Submit a job</code><br/>
+            <code class="text-[--color-green]">swarmpool submit \</code><br/>
+            <code class="text-[--color-green]">  --model queenbee-spine \</code><br/>
+            <code class="text-[--color-green]">  --input ./spine_mri.nii.gz \</code><br/>
+            <code class="text-[--color-green]">  --callback https://your-api.com/webhook</code>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Pricing</h3>
+          <table class="terminal-table text-sm">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Price/Job</th>
+                <th>Typical Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>queenbee-spine</td>
+                <td class="text-[--color-green]">$0.10</td>
+                <td>~2s</td>
+              </tr>
+              <tr>
+                <td>queenbee-chest</td>
+                <td class="text-[--color-green]">$0.10</td>
+                <td>~1.5s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Section -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 id="api" class="text-2xl font-bold glow-text mb-6">API Reference</h2>
+
+      <div class="space-y-6">
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Pool State (IPFS)</h3>
+          <p class="text-sm text-[--color-text-dim] mb-4">
+            The pool state is published to IPFS and can be fetched via any gateway:
+          </p>
+          <div class="code-block">
+            <code class="text-[--color-green]"># Fetch current state</code><br/>
+            <code class="text-[--color-green]">curl https://ipfs.io/ipfs/swarmpool.eth/state.json</code><br/><br/>
+            <code class="text-[--color-green]"># Response</code><br/>
+            <code class="text-[--color-text-dim]">{`{
+  "pool_id": "swarmpool-mainnet-001",
+  "total_jobs": 12847,
+  "total_volume_usdc": 1284.70,
+  "current_epoch": { ... },
+  "pending_jobs": [ ... ],
+  "active_miners": [ ... ]
+}`}</code>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Epoch Verification</h3>
+          <div class="code-block">
+            <code class="text-[--color-green]"># Fetch sealed epoch</code><br/>
+            <code class="text-[--color-green]">curl https://ipfs.io/ipfs/swarmpool.eth/epochs/epoch-001.json</code><br/><br/>
+            <code class="text-[--color-green]"># Verify Merkle proof</code><br/>
+            <code class="text-[--color-text-dim]">{`{
+  "epoch_id": "epoch-001",
+  "merkle_root": "0x1a2b3c...",
+  "jobs": [ ... ],
+  "proofs": { ... }
+}`}</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl font-bold glow-text mb-6">Resources</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="https://github.com/SudoSuOps/swarm-genesis" class="terminal-box-dim p-6 hover:border-[--color-green] transition-colors block">
+          <div class="font-medium text-[--color-green] mb-2">GitHub Repository</div>
+          <p class="text-sm text-[--color-text-dim]">Source code, issues, contributions</p>
+        </a>
+        <a href="/SWARMPOOL_ARCHITECTURE.md" class="terminal-box-dim p-6 hover:border-[--color-green] transition-colors block">
+          <div class="font-medium text-[--color-green] mb-2">Architecture Spec</div>
+          <p class="text-sm text-[--color-text-dim]">Full technical specification</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

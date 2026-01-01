@@ -1,0 +1,205 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { MinerLeaderboard, ActiveMiners } from '../components/MinerTable';
+---
+
+<Layout title="Miners" description="Join SwarmPool and earn rewards for GPU compute">
+  <!-- Header -->
+  <section class="py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">
+        <span class="glow-text">GPU Miners</span>
+      </h1>
+      <p class="text-lg text-[--color-text-dim] max-w-2xl mx-auto">
+        Earn USDC rewards by processing AI inference jobs. No staking required.
+      </p>
+    </div>
+  </section>
+
+  <!-- Miner Stats Grid -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+          <MinerLeaderboard client:load />
+        </div>
+        <div>
+          <ActiveMiners client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join Section -->
+  <section id="join" class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="terminal-box p-8">
+        <h2 class="text-2xl font-bold glow-text mb-6">Join the Pool</h2>
+
+        <!-- Requirements -->
+        <div class="mb-8">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Requirements</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="terminal-box-dim p-4">
+              <div class="text-sm font-medium mb-2">Hardware</div>
+              <ul class="text-sm text-[--color-text-dim] space-y-1">
+                <li>NVIDIA GPU (RTX 3080+ recommended)</li>
+                <li>16GB+ VRAM for optimal performance</li>
+                <li>Linux or Windows with CUDA 12+</li>
+              </ul>
+            </div>
+            <div class="terminal-box-dim p-4">
+              <div class="text-sm font-medium mb-2">Identity</div>
+              <ul class="text-sm text-[--color-text-dim] space-y-1">
+                <li>ENS subdomain (yourname.swarmbee.eth)</li>
+                <li>Ethereum wallet for payouts</li>
+                <li>Stable internet connection</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setup Steps -->
+        <div class="mb-8">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Quick Start</h3>
+
+          <div class="space-y-4">
+            <!-- Step 1 -->
+            <div class="terminal-box-dim p-4">
+              <div class="flex items-start gap-4">
+                <span class="text-[--color-cyan] font-bold">1</span>
+                <div class="flex-1">
+                  <div class="font-medium mb-2">Install the miner CLI</div>
+                  <div class="code-block">
+                    <code class="text-[--color-green]">pip install swarmpool-miner</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="terminal-box-dim p-4">
+              <div class="flex items-start gap-4">
+                <span class="text-[--color-cyan] font-bold">2</span>
+                <div class="flex-1">
+                  <div class="font-medium mb-2">Register your miner identity</div>
+                  <div class="code-block">
+                    <code class="text-[--color-green]"># Generate a new key pair</code><br/>
+                    <code class="text-[--color-green]">swarmpool keygen</code><br/><br/>
+                    <code class="text-[--color-green]"># Register with your ENS</code><br/>
+                    <code class="text-[--color-green]">swarmpool register --ens yourname.swarmbee.eth</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="terminal-box-dim p-4">
+              <div class="flex items-start gap-4">
+                <span class="text-[--color-cyan] font-bold">3</span>
+                <div class="flex-1">
+                  <div class="font-medium mb-2">Download the AI models</div>
+                  <div class="code-block">
+                    <code class="text-[--color-green]"># Download queenbee models</code><br/>
+                    <code class="text-[--color-green]">swarmpool models download --all</code><br/><br/>
+                    <code class="text-[--color-text-dim]"># Or download specific models</code><br/>
+                    <code class="text-[--color-green]">swarmpool models download queenbee-spine</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="terminal-box-dim p-4">
+              <div class="flex items-start gap-4">
+                <span class="text-[--color-cyan] font-bold">4</span>
+                <div class="flex-1">
+                  <div class="font-medium mb-2">Start mining</div>
+                  <div class="code-block">
+                    <code class="text-[--color-green]"># Start the miner (default: GPU 0)</code><br/>
+                    <code class="text-[--color-green]">swarmpool mine</code><br/><br/>
+                    <code class="text-[--color-text-dim]"># Or specify GPUs</code><br/>
+                    <code class="text-[--color-green]">swarmpool mine --gpu 0,1</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earnings Info -->
+        <div class="mb-8">
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Earnings</h3>
+          <div class="terminal-box-dim p-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <div class="text-2xl font-bold text-[--color-green]">$0.075</div>
+                <div class="text-sm text-[--color-text-dim]">Per inference job</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-[--color-cyan]">~$5-10</div>
+                <div class="text-sm text-[--color-text-dim]">Per hour (RTX 4090)</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold">75%</div>
+                <div class="text-sm text-[--color-text-dim]">Miner share</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settlement -->
+        <div>
+          <h3 class="text-lg font-medium text-[--color-green] mb-4">Settlement</h3>
+          <p class="text-sm text-[--color-text-dim] mb-4">
+            Earnings are settled at the end of each epoch (24 hours). Miners receive 75% of all job fees.
+            The remaining 25% goes to hive operations (pool maintenance, model updates, infrastructure).
+          </p>
+          <div class="code-block">
+            <code class="text-[--color-text-dim]"># Check your earnings</code><br/>
+            <code class="text-[--color-green]">swarmpool earnings --epoch current</code><br/><br/>
+            <code class="text-[--color-text-dim]"># View payout history</code><br/>
+            <code class="text-[--color-green]">swarmpool payouts --history</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl font-bold glow-text mb-8 text-center">FAQ</h2>
+
+      <div class="space-y-4">
+        <div class="terminal-box-dim p-4">
+          <h3 class="font-medium text-[--color-green] mb-2">How do I get an ENS subdomain?</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            Contact the pool operator to request a yourname.swarmbee.eth subdomain, or use your existing ENS name.
+          </p>
+        </div>
+
+        <div class="terminal-box-dim p-4">
+          <h3 class="font-medium text-[--color-green] mb-2">What models can I mine?</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            Currently: queenbee-spine (lumbar/cervical MRI), queenbee-chest (chest X-ray). More models coming soon.
+          </p>
+        </div>
+
+        <div class="terminal-box-dim p-4">
+          <h3 class="font-medium text-[--color-green] mb-2">How are payouts calculated?</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            Miners earn 75% of each job fee (currently $0.10/job = $0.075 per job). Payouts are settled at epoch end via Merkle proofs.
+          </p>
+        </div>
+
+        <div class="terminal-box-dim p-4">
+          <h3 class="font-medium text-[--color-green] mb-2">What if my GPU goes offline?</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            No penalty for going offline. You simply stop receiving new jobs. Claimed but incomplete jobs are returned to the queue after timeout.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

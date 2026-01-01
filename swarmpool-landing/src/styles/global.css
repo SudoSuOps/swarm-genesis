@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* SwarmPool Terminal Theme */
+@theme {
+  --color-bg-dark: #0a0a0a;
+  --color-bg-card: #111111;
+  --color-bg-hover: #1a1a1a;
+  --color-border: #222222;
+  --color-border-glow: #00aa55;
+  --color-green: #00ff88;
+  --color-green-dim: #00aa55;
+  --color-green-dark: #004422;
+  --color-amber: #ffaa00;
+  --color-red: #ff4444;
+  --color-cyan: #00ffff;
+  --color-text: #e0e0e0;
+  --color-text-dim: #666666;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* Base styles */
+html {
+  background: var(--color-bg-dark);
+}
+
+body {
+  background: var(--color-bg-dark);
+  color: var(--color-text);
+  font-family: var(--font-family-mono);
+  min-height: 100vh;
+}
+
+/* Terminal box */
+.terminal-box {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-glow);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+  border-radius: 4px;
+}
+
+.terminal-box-dim {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+/* Glowing text */
+.glow-text {
+  color: var(--color-green);
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.glow-text-strong {
+  color: var(--color-green);
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 40px rgba(0, 255, 136, 0.4);
+}
+
+/* Pulse animation */
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Blink cursor */
+.cursor-blink::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ASCII art */
+.ascii-art {
+  font-size: 6px;
+  line-height: 1.1;
+  color: var(--color-green);
+  white-space: pre;
+  letter-spacing: 0;
+}
+
+@media (min-width: 640px) {
+  .ascii-art {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 768px) {
+  .ascii-art {
+    font-size: 10px;
+  }
+}
+
+/* Terminal table */
+.terminal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.terminal-table th,
+.terminal-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.terminal-table th {
+  color: var(--color-green);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.terminal-table tr:hover td {
+  background: var(--color-bg-hover);
+}
+
+/* Status indicators */
+.status-online {
+  color: var(--color-green);
+}
+
+.status-busy {
+  color: var(--color-amber);
+}
+
+.status-offline {
+  color: var(--color-red);
+}
+
+/* Stat card */
+.stat-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  border-color: var(--color-green-dim);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green-dim);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-green-dark);
+  color: var(--color-green);
+}
+
+/* Links */
+a {
+  color: var(--color-green);
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+a:hover {
+  color: var(--color-green);
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-green-dark);
+  color: var(--color-green);
+  border: 1px solid var(--color-green-dim);
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: var(--font-family-mono);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--color-green-dim);
+  color: var(--color-bg-dark);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* Code blocks */
+.code-block {
+  background: var(--color-bg-dark);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+/* Matrix rain background effect */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.03;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 136, 0.03) 2px,
+      rgba(0, 255, 136, 0.03) 4px
+    );
+}
+
+/* Scanlines effect */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.3;
+}
+
+/* Highlight numbers */
+.highlight-number {
+  color: var(--color-cyan);
+  font-weight: 500;
+}
+
+/* Tag badges */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-live {
+  background: rgba(0, 255, 136, 0.2);
+  color: var(--color-green);
+  border: 1px solid var(--color-green-dim);
+}
+
+.tag-sealed {
+  background: rgba(102, 102, 102, 0.2);
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-text-dim);
+}
+
+.tag-pending {
+  background: rgba(255, 170, 0, 0.2);
+  color: var(--color-amber);
+  border: 1px solid var(--color-amber);
+}

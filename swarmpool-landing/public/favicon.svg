@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="poolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00aa55;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Pool water -->
+  <ellipse cx="50" cy="60" rx="45" ry="25" fill="url(#poolGrad)" opacity="0.3"/>
+  <!-- Pool edge -->
+  <ellipse cx="50" cy="60" rx="45" ry="25" fill="none" stroke="#00ff88" stroke-width="3"/>
+  <!-- Swimmer/bee icon -->
+  <circle cx="50" cy="55" r="12" fill="#00ff88"/>
+  <circle cx="42" cy="48" r="4" fill="#0a0a0a"/>
+  <circle cx="58" cy="48" r="4" fill="#0a0a0a"/>
+  <!-- Wings -->
+  <ellipse cx="35" cy="45" rx="8" ry="5" fill="#00ff88" opacity="0.5" transform="rotate(-30 35 45)"/>
+  <ellipse cx="65" cy="45" rx="8" ry="5" fill="#00ff88" opacity="0.5" transform="rotate(30 65 45)"/>
+  <!-- Antenna -->
+  <line x1="45" y1="40" x2="40" y2="30" stroke="#00ff88" stroke-width="2" stroke-linecap="round"/>
+  <line x1="55" y1="40" x2="60" y2="30" stroke="#00ff88" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="40" cy="28" r="3" fill="#00ff88"/>
+  <circle cx="60" cy="28" r="3" fill="#00ff88"/>
+</svg>

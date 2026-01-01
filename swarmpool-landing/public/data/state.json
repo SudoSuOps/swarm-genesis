@@ -1,0 +1,163 @@
+{
+  "pool_id": "swarmpool-mainnet-001",
+  "pool_name": "SwarmPool Genesis",
+  "coordinator": "swarmpool.eth",
+  "total_jobs": 12847,
+  "total_proofs": 12847,
+  "total_volume_usdc": 1284.70,
+  "current_epoch": {
+    "epoch_id": "epoch-003",
+    "status": "active",
+    "started_at": "2025-12-31T00:00:00Z",
+    "jobs_completed": 847,
+    "total_volume_usdc": "84.70",
+    "miners_paid": 3
+  },
+  "pending_jobs": [
+    {
+      "job_id": "job-a1b2c3d4e5f6",
+      "model": "queenbee-spine",
+      "status": "pending",
+      "client": "hospital-alpha.eth",
+      "submitted_at": "2025-12-31T23:58:30Z",
+      "price_usdc": "0.10"
+    },
+    {
+      "job_id": "job-b2c3d4e5f6a7",
+      "model": "queenbee-chest",
+      "status": "pending",
+      "client": "clinic-beta.eth",
+      "submitted_at": "2025-12-31T23:58:15Z",
+      "price_usdc": "0.10"
+    },
+    {
+      "job_id": "job-c3d4e5f6a7b8",
+      "model": "queenbee-spine",
+      "status": "pending",
+      "client": "radiology-gamma.eth",
+      "submitted_at": "2025-12-31T23:57:45Z",
+      "price_usdc": "0.10"
+    }
+  ],
+  "recent_completions": [
+    {
+      "job_id": "job-x9y8z7w6v5u4",
+      "model": "queenbee-spine",
+      "status": "completed",
+      "client": "hospital-alpha.eth",
+      "submitted_at": "2025-12-31T23:55:00Z",
+      "claimed_by": "bumble70b.swarmbee.eth",
+      "completed_at": "2025-12-31T23:55:02Z",
+      "price_usdc": "0.10",
+      "proof_cid": "bafybeig..."
+    },
+    {
+      "job_id": "job-y8z7w6v5u4t3",
+      "model": "queenbee-chest",
+      "status": "completed",
+      "client": "clinic-beta.eth",
+      "submitted_at": "2025-12-31T23:54:30Z",
+      "claimed_by": "worker-delta.swarmbee.eth",
+      "completed_at": "2025-12-31T23:54:32Z",
+      "price_usdc": "0.10",
+      "proof_cid": "bafybeih..."
+    },
+    {
+      "job_id": "job-z7w6v5u4t3s2",
+      "model": "queenbee-spine",
+      "status": "completed",
+      "client": "radiology-gamma.eth",
+      "submitted_at": "2025-12-31T23:54:00Z",
+      "claimed_by": "bumble70b.swarmbee.eth",
+      "completed_at": "2025-12-31T23:54:02Z",
+      "price_usdc": "0.10",
+      "proof_cid": "bafybeij..."
+    },
+    {
+      "job_id": "job-w6v5u4t3s2r1",
+      "model": "queenbee-chest",
+      "status": "completed",
+      "client": "hospital-alpha.eth",
+      "submitted_at": "2025-12-31T23:53:30Z",
+      "claimed_by": "worker-epsilon.swarmbee.eth",
+      "completed_at": "2025-12-31T23:53:33Z",
+      "price_usdc": "0.10",
+      "proof_cid": "bafybeik..."
+    },
+    {
+      "job_id": "job-v5u4t3s2r1q0",
+      "model": "queenbee-spine",
+      "status": "completed",
+      "client": "clinic-beta.eth",
+      "submitted_at": "2025-12-31T23:53:00Z",
+      "claimed_by": "bumble70b.swarmbee.eth",
+      "completed_at": "2025-12-31T23:53:01Z",
+      "price_usdc": "0.10",
+      "proof_cid": "bafybeil..."
+    }
+  ],
+  "active_miners": [
+    {
+      "ens": "bumble70b.swarmbee.eth",
+      "status": "online",
+      "gpu": "2x RTX 5090",
+      "vram_gb": 64,
+      "hashrate": "420 inf/hr",
+      "jobs_completed": 8234,
+      "total_earned": "617.55",
+      "last_seen": "2025-12-31T23:59:55Z",
+      "uptime_percent": 99.8
+    },
+    {
+      "ens": "worker-delta.swarmbee.eth",
+      "status": "busy",
+      "gpu": "RTX 4090",
+      "vram_gb": 24,
+      "hashrate": "180 inf/hr",
+      "jobs_completed": 2891,
+      "total_earned": "216.82",
+      "last_seen": "2025-12-31T23:59:50Z",
+      "uptime_percent": 98.5
+    },
+    {
+      "ens": "worker-epsilon.swarmbee.eth",
+      "status": "online",
+      "gpu": "RTX 4080",
+      "vram_gb": 16,
+      "hashrate": "120 inf/hr",
+      "jobs_completed": 1722,
+      "total_earned": "129.15",
+      "last_seen": "2025-12-31T23:59:45Z",
+      "uptime_percent": 97.2
+    }
+  ],
+  "epochs": [
+    {
+      "epoch_id": "epoch-002",
+      "status": "sealed",
+      "started_at": "2025-12-30T00:00:00Z",
+      "ended_at": "2025-12-30T23:59:59Z",
+      "jobs_completed": 6000,
+      "total_volume_usdc": "600.00",
+      "miners_paid": 3,
+      "merkle_root": "0x7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"
+    },
+    {
+      "epoch_id": "epoch-001",
+      "status": "sealed",
+      "started_at": "2025-12-29T00:00:00Z",
+      "ended_at": "2025-12-29T23:59:59Z",
+      "jobs_completed": 6000,
+      "total_volume_usdc": "600.00",
+      "miners_paid": 3,
+      "merkle_root": "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b"
+    }
+  ],
+  "last_updated": "2025-12-31T23:59:59Z",
+  "stats": {
+    "avg_completion_time": 1.8,
+    "jobs_per_hour": 285,
+    "active_miner_count": 3,
+    "pending_job_count": 3
+  }
+}

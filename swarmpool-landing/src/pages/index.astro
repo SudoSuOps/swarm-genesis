@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LiveStats, EpochStats } from '../components/LiveStats';
+import { MinerLeaderboard, ActiveMiners } from '../components/MinerTable';
+import { PendingJobs, RecentCompletions, JobFeed } from '../components/JobQueue';
+import { EpochHistory } from '../components/EpochHistory';
+---
+
+<Layout title="Dashboard">
+  <!-- Hero Section -->
+  <section class="py-12 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- ASCII Art Logo -->
+      <div class="text-center mb-8">
+        <pre class="ascii-art inline-block text-left glow-text-strong">
+███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗██████╗  ██████╗  ██████╗ ██╗
+██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔═══██╗██╔═══██╗██║
+███████╗██║ █╗ ██║███████║██████╔╝██╔████╔██║██████╔╝██║   ██║██║   ██║██║
+╚════██║██║███╗██║██╔══██║██╔══██╗██║╚██╔╝██║██╔═══╝ ██║   ██║██║   ██║██║
+███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║██║     ╚██████╔╝╚██████╔╝███████╗
+╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝  ╚═════╝ ╚══════╝
+        </pre>
+      </div>
+
+      <div class="text-center mb-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">
+          <span class="glow-text">Decentralized AI Mining Pool</span>
+        </h1>
+        <p class="text-lg text-[--color-text-dim] max-w-2xl mx-auto">
+          Earn rewards for GPU compute. Submit AI inference jobs. Trustless settlement via IPFS.
+        </p>
+        <div class="flex items-center justify-center gap-4 mt-6">
+          <a href="/miners#join" class="btn-primary">
+            Start Mining →
+          </a>
+          <a href="/docs" class="text-[--color-text-dim] hover:text-[--color-green] transition-colors">
+            Read Docs
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Stats -->
+      <LiveStats client:load />
+    </div>
+  </section>
+
+  <!-- Current Epoch -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-xl font-bold glow-text mb-6">CURRENT EPOCH</h2>
+      <EpochStats client:load />
+    </div>
+  </section>
+
+  <!-- Main Dashboard Grid -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Jobs -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <PendingJobs client:load />
+            <RecentCompletions client:load />
+          </div>
+          <MinerLeaderboard client:load />
+        </div>
+
+        <!-- Right Column: Miners & Feed -->
+        <div class="space-y-6">
+          <ActiveMiners client:load />
+          <JobFeed client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Epoch History -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <EpochHistory client:load />
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-2xl font-bold glow-text mb-8 text-center">HOW IT WORKS</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="terminal-box-dim p-6 text-center">
+          <div class="text-4xl mb-4">1</div>
+          <h3 class="text-lg font-bold text-[--color-green] mb-2">Submit Job</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            Clients submit AI inference jobs with USDC deposits. Jobs are published to the pool mempool.
+          </p>
+        </div>
+
+        <div class="terminal-box-dim p-6 text-center">
+          <div class="text-4xl mb-4">2</div>
+          <h3 class="text-lg font-bold text-[--color-green] mb-2">Miners Process</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            GPU miners claim jobs, run inference, and submit cryptographic proofs of completion.
+          </p>
+        </div>
+
+        <div class="terminal-box-dim p-6 text-center">
+          <div class="text-4xl mb-4">3</div>
+          <h3 class="text-lg font-bold text-[--color-green] mb-2">Get Paid</h3>
+          <p class="text-sm text-[--color-text-dim]">
+            At epoch end, miners receive 75% of job fees. Trustless settlement via Merkle proofs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <div class="terminal-box p-8">
+        <h2 class="text-2xl font-bold glow-text mb-4">Ready to Mine?</h2>
+        <p class="text-[--color-text-dim] mb-6">
+          Join the pool and start earning rewards for your GPU compute power.
+        </p>
+        <div class="code-block text-left mb-6">
+          <code class="text-[--color-green]">$ pip install swarmpool-miner</code><br/>
+          <code class="text-[--color-green]">$ swarmpool register --ens yourname.swarmbee.eth</code><br/>
+          <code class="text-[--color-green]">$ swarmpool mine --gpu 0</code>
+        </div>
+        <a href="/miners#join" class="btn-primary">
+          View Full Setup Guide →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Terminal Footer -->
+  <section class="py-8">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="terminal-box-dim p-4 text-center">
+        <code class="text-xs text-[--color-text-dim]">
+          swarmpool.eth | Decentralized AI Compute |
+          <span class="text-[--color-green]">Status: Online</span> |
+          <span class="text-[--color-cyan]">Epoch: ACTIVE</span>
+        </code>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { EpochHistory, EpochSummary } from '../components/EpochHistory';
+import { EpochStats } from '../components/LiveStats';
+---
+
+<Layout title="Epochs" description="SwarmPool epoch history and settlement records">
+  <!-- Header -->
+  <section class="py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">
+        <span class="glow-text">Epoch History</span>
+      </h1>
+      <p class="text-lg text-[--color-text-dim] max-w-2xl mx-auto">
+        Settlement cycles with on-chain Merkle proofs. Trustless, verifiable payouts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Summary Stats -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <EpochSummary client:load />
+    </div>
+  </section>
+
+  <!-- Current Epoch -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-xl font-bold glow-text mb-6">CURRENT EPOCH</h2>
+      <EpochStats client:load />
+    </div>
+  </section>
+
+  <!-- Epoch History Table -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <EpochHistory client:load />
+    </div>
+  </section>
+
+  <!-- How Epochs Work -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl font-bold glow-text mb-8 text-center">HOW EPOCHS WORK</h2>
+
+      <div class="space-y-6">
+        <div class="terminal-box-dim p-6">
+          <div class="flex items-start gap-4">
+            <span class="text-2xl font-bold text-[--color-cyan]">1</span>
+            <div>
+              <h3 class="font-medium text-[--color-green] mb-2">Active Phase</h3>
+              <p class="text-sm text-[--color-text-dim]">
+                Jobs are submitted, claimed, and completed. Each completed job generates a cryptographic proof.
+                The epoch remains active for 24 hours (or until manually sealed).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <div class="flex items-start gap-4">
+            <span class="text-2xl font-bold text-[--color-cyan]">2</span>
+            <div>
+              <h3 class="font-medium text-[--color-green] mb-2">Sealing</h3>
+              <p class="text-sm text-[--color-text-dim]">
+                At epoch end, the pool operator seals the epoch. All job proofs are aggregated into a Merkle tree.
+                The Merkle root is published to IPFS for permanent, trustless verification.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <div class="flex items-start gap-4">
+            <span class="text-2xl font-bold text-[--color-cyan]">3</span>
+            <div>
+              <h3 class="font-medium text-[--color-green] mb-2">Settlement</h3>
+              <p class="text-sm text-[--color-text-dim]">
+                Miners can claim their earnings by submitting a Merkle proof of their completed jobs.
+                75% of job fees go to miners, 25% to hive operations.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal-box-dim p-6">
+          <div class="flex items-start gap-4">
+            <span class="text-2xl font-bold text-[--color-cyan]">4</span>
+            <div>
+              <h3 class="font-medium text-[--color-green] mb-2">Verification</h3>
+              <p class="text-sm text-[--color-text-dim]">
+                Anyone can verify the epoch by fetching the Merkle tree from IPFS and checking individual proofs.
+                This ensures trustless operation - the pool cannot cheat on payouts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verification Commands -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="terminal-box p-6">
+        <h3 class="text-lg font-bold glow-text mb-4">Verify an Epoch</h3>
+        <div class="code-block">
+          <code class="text-[--color-text-dim]"># Fetch epoch data from IPFS</code><br/>
+          <code class="text-[--color-green]">swarmpool epoch fetch epoch-001</code><br/><br/>
+          <code class="text-[--color-text-dim]"># Verify Merkle root</code><br/>
+          <code class="text-[--color-green]">swarmpool epoch verify epoch-001</code><br/><br/>
+          <code class="text-[--color-text-dim]"># Check your jobs in the epoch</code><br/>
+          <code class="text-[--color-green]">swarmpool epoch jobs epoch-001 --miner yourname.swarmbee.eth</code><br/><br/>
+          <code class="text-[--color-text-dim]"># Generate payout proof</code><br/>
+          <code class="text-[--color-green]">swarmpool epoch proof epoch-001 --miner yourname.swarmbee.eth</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Settlement Distribution -->
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl font-bold glow-text mb-8 text-center">SETTLEMENT DISTRIBUTION</h2>
+
+      <div class="terminal-box p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <div class="text-4xl font-bold text-[--color-green] mb-2">75%</div>
+            <div class="text-lg font-medium mb-2">Miners</div>
+            <p class="text-sm text-[--color-text-dim]">
+              Distributed proportionally based on jobs completed. Verified via Merkle proofs.
+            </p>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-[--color-amber] mb-2">25%</div>
+            <div class="text-lg font-medium mb-2">Hive Operations</div>
+            <p class="text-sm text-[--color-text-dim]">
+              Pool maintenance, model updates, infrastructure, and development.
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t border-[--color-border] mt-6 pt-6">
+          <div class="text-sm text-[--color-text-dim]">
+            <strong class="text-[--color-text]">Example:</strong> If an epoch generates $1,000 in job fees:
+            <ul class="mt-2 space-y-1 ml-4">
+              <li>$750 distributed to miners based on jobs completed</li>
+              <li>$250 to hive operations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
