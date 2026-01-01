@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.swarmhive.eth/bee-23/genesis.miner.schema.json",
+  "title": "Bee-23 Miner GENESIS Snapshot",
+  "allOf": [
+    { "$ref": "base.snapshot.schema.json" },
+    {
+      "properties": {
+        "type": { "const": "GENESIS_MINER" },
+        "body": {
+          "type": "object",
+          "required": ["miner", "capabilities", "availability"],
+          "properties": {
+            "miner": { "type": "string", "pattern": "^miner\\..+\\.eth$" },
+            "capabilities": {
+              "type": "object",
+              "required": ["gpu_vram_gb", "gpu_count", "cpu_cores", "ram_gb"],
+              "properties": {
+                "gpu_model": { "type": "string" },
+                "gpu_count": { "type": "integer", "minimum": 1 },
+                "gpu_vram_gb": { "type": "integer", "minimum": 8 },
+                "cpu_model": { "type": "string" },
+                "cpu_cores": { "type": "integer", "minimum": 2 },
+                "ram_gb": { "type": "integer", "minimum": 8 },
+                "storage_gb": { "type": "integer", "minimum": 50 },
+                "frameworks": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "minItems": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "availability": {
+              "type": "object",
+              "required": ["uptime_class"],
+              "properties": {
+                "uptime_class": { "type": "string", "enum": ["best_effort", "scheduled", "24_7"] },
+                "power_profile": { "type": "string", "enum": ["eco", "balanced", "max"] },
+                "region_hint": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}
