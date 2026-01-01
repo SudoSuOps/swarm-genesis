@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.swarmhive.eth/bee-23/claim.schema.json",
+  "title": "Bee-23 CLAIM Snapshot",
+  "allOf": [
+    { "$ref": "base.snapshot.schema.json" },
+    {
+      "properties": {
+        "type": { "const": "CLAIM" },
+        "body": {
+          "type": "object",
+          "required": ["job_id", "miner", "claim_ts", "lease_seconds"],
+          "properties": {
+            "job_id": { "type": "string" },
+            "miner": { "type": "string", "pattern": "^miner\\..+\\.eth$" },
+            "claim_ts": { "type": "integer" },
+            "lease_seconds": { "type": "integer", "minimum": 30, "maximum": 86400 }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

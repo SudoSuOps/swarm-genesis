@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.swarmhive.eth/bee-23/epoch.seal.schema.json",
+  "title": "Bee-23 EPOCH_SEAL Snapshot",
+  "allOf": [
+    { "$ref": "base.snapshot.schema.json" },
+    {
+      "properties": {
+        "type": { "const": "EPOCH_SEAL" },
+        "body": {
+          "type": "object",
+          "required": ["epoch", "status", "job_summary", "payouts"],
+          "properties": {
+            "epoch": { "type": "integer", "minimum": 1 },
+            "status": { "type": "string", "enum": ["SEALED"] },
+            "job_summary": {
+              "type": "object",
+              "required": ["jobs_published", "jobs_completed", "total_reward", "total_compute_seconds"],
+              "properties": {
+                "jobs_published": { "type": "integer", "minimum": 0 },
+                "jobs_completed": { "type": "integer", "minimum": 0 },
+                "total_reward": { "type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$" },
+                "total_compute_seconds": { "type": "integer", "minimum": 0 }
+              },
+              "additionalProperties": false
+            },
+            "payouts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["miner", "amount", "currency"],
+                "properties": {
+                  "miner": { "type": "string", "pattern": "^miner\\..+\\.eth$" },
+                  "amount": { "type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$" },
+                  "currency": { "type": "string", "enum": ["USDC", "USDT", "DAI"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}
