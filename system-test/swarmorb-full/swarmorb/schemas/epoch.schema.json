@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swarmorb.eth/schemas/epoch.schema.json",
+  "title": "Epoch Bundle",
+  "description": "Complete epoch bundle containing all finalized data",
+  "type": "object",
+  "required": ["epoch_id", "files"],
+  "properties": {
+    "epoch_id": {
+      "type": "string",
+      "pattern": "^epoch-\\d{3,}$",
+      "description": "Unique epoch identifier"
+    },
+    "files": {
+      "type": "object",
+      "required": ["SUMMARY.json", "SIGNATURE.txt"],
+      "properties": {
+        "SUMMARY.json": {
+          "type": "object",
+          "description": "Epoch summary with treasury and payout data",
+          "$ref": "summary.schema.json"
+        },
+        "SIGNATURE.txt": {
+          "type": "string",
+          "description": "Artifact hashes and EIP-191 signature"
+        },
+        "jobs.json": {
+          "type": "object",
+          "description": "Job execution records"
+        },
+        "agents.json": {
+          "type": "object",
+          "description": "Agent participation records"
+        },
+        "poe_bundle.json": {
+          "type": "object",
+          "description": "Proof of Execution attestations"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BundleFile": {
+      "type": "object",
+      "required": ["filename", "hash"],
+      "properties": {
+        "filename": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string",
+          "description": "SHA256 hash of file contents"
+        },
+        "size": {
+          "type": "integer",
+          "description": "File size in bytes"
+        }
+      }
+    }
+  }
+}

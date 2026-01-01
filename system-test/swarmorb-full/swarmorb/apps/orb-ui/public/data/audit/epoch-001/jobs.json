@@ -1,0 +1,59 @@
+{
+  "epoch_id": "epoch-001",
+  "jobs": [
+    {
+      "job_id": "job-001-0001",
+      "task_type": "swarmview.mri.demo",
+      "client": "clinic1.swarmvision.eth",
+      "agent": "bee23.swarmcompute.eth",
+      "submitted_at": "2025-01-15T08:23:45Z",
+      "started_at": "2025-01-15T08:23:47Z",
+      "completed_at": "2025-01-15T08:23:50Z",
+      "status": "completed",
+      "execution_ms": 2150,
+      "fee": "10.00",
+      "poe_hash": "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2"
+    },
+    {
+      "job_id": "job-001-0002",
+      "task_type": "swarmview.spine.stenosis",
+      "client": "ortho.swarmvision.eth",
+      "agent": "rig1.swarmcompute.eth",
+      "submitted_at": "2025-01-15T09:12:33Z",
+      "started_at": "2025-01-15T09:12:35Z",
+      "completed_at": "2025-01-15T09:12:38Z",
+      "status": "completed",
+      "execution_ms": 2890,
+      "fee": "10.00",
+      "poe_hash": "a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3"
+    },
+    {
+      "job_id": "job-001-0003",
+      "task_type": "swarmview.mri.demo",
+      "client": "imaging.swarmvision.eth",
+      "agent": "bee23.swarmcompute.eth",
+      "submitted_at": "2025-01-15T10:45:12Z",
+      "started_at": "2025-01-15T10:45:14Z",
+      "completed_at": "2025-01-15T10:45:16Z",
+      "status": "completed",
+      "execution_ms": 1980,
+      "fee": "10.00",
+      "poe_hash": "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4"
+    },
+    {
+      "job_id": "job-001-0004",
+      "task_type": "swarmview.mri.demo",
+      "client": "clinic1.swarmvision.eth",
+      "agent": "node7.swarmcompute.eth",
+      "submitted_at": "2025-01-15T11:23:45Z",
+      "started_at": "2025-01-15T11:23:48Z",
+      "completed_at": null,
+      "status": "failed",
+      "execution_ms": null,
+      "fee": "0.00",
+      "error": "Agent timeout"
+    }
+  ],
+  "total_count": 112,
+  "sample_note": "This file contains a sample of jobs. Full job list available in complete bundle."
+}

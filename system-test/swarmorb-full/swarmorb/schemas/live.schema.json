@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swarmorb.eth/schemas/live.schema.json",
+  "title": "SwarmOrb Live State",
+  "description": "Signed real-time state from SwarmOS coordinator",
+  "type": "object",
+  "required": ["version", "timestamp", "coordinator", "current_epoch", "agents", "queue", "signature"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "coordinator": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.eth$"
+    },
+    "current_epoch": {
+      "$ref": "#/definitions/CurrentEpoch"
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LiveAgent"
+      }
+    },
+    "queue": {
+      "$ref": "#/definitions/QueueStatus"
+    },
+    "signature": {
+      "$ref": "#/definitions/EIP191Signature"
+    }
+  },
+  "definitions": {
+    "CurrentEpoch": {
+      "type": "object",
+      "required": ["epoch_id", "started_at", "jobs_completed", "revenue_collected"],
+      "properties": {
+        "epoch_id": {
+          "type": "string",
+          "pattern": "^epoch-\\d{3,}$"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ends_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "jobs_completed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jobs_in_progress": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revenue_collected": {
+          "type": "string"
+        },
+        "work_pool": {
+          "type": "string"
+        },
+        "readiness_pool": {
+          "type": "string"
+        }
+      }
+    },
+    "LiveAgent": {
+      "type": "object",
+      "required": ["ens", "status", "last_heartbeat"],
+      "properties": {
+        "ens": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["online", "busy", "offline", "draining"]
+        },
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "current_job": {
+          "type": ["string", "null"]
+        },
+        "jobs_this_epoch": {
+          "type": "integer"
+        },
+        "uptime_this_epoch": {
+          "type": "integer",
+          "description": "Seconds online this epoch"
+        },
+        "hardware": {
+          "$ref": "#/definitions/HardwareInfo"
+        }
+      }
+    },
+    "HardwareInfo": {
+      "type": "object",
+      "properties": {
+        "gpu": {
+          "type": "string"
+        },
+        "vram_gb": {
+          "type": "number"
+        },
+        "cpu": {
+          "type": "string"
+        },
+        "ram_gb": {
+          "type": "number"
+        }
+      }
+    },
+    "QueueStatus": {
+      "type": "object",
+      "required": ["pending", "in_progress"],
+      "properties": {
+        "pending": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "in_progress": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "avg_wait_seconds": {
+          "type": "number"
+        }
+      }
+    },
+    "EIP191Signature": {
+      "type": "object",
+      "required": ["signer", "signature", "message_hash"],
+      "properties": {
+        "signer": {
+          "type": "string",
+          "description": "ENS name of signer"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Hex-encoded EIP-191 signature"
+        },
+        "message_hash": {
+          "type": "string",
+          "description": "SHA256 of canonical JSON (excluding signature block)"
+        }
+      }
+    }
+  }
+}

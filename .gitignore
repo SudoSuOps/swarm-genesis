@@ -18,6 +18,8 @@ Thumbs.db
 *.egg-info/
 dist/
 build/
+node_modules/
+.astro/
 
 # Logs
 *.log
@@ -27,7 +29,6 @@ build/
 .env.local
 
 # Temporary files
-system-test/
 *-preview.html
 *.zip
 

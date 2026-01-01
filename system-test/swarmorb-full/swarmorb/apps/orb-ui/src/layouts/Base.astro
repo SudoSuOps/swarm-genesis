@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "SwarmOrb - Read-only SwarmOS explorer" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} | SwarmOrb</title>
+  <meta name="description" content={description}>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body class="grid-bg min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-surface-950/90 backdrop-blur-md border-b border-surface-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-8 h-8 orb-glow flex items-center justify-center">
+            <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+          </div>
+          <span class="font-semibold text-text-primary">SwarmOrb</span>
+          <span class="text-xs text-text-muted font-mono hidden sm:inline">swarmorb.eth</span>
+        </a>
+        
+        <!-- Nav links -->
+        <div class="flex items-center gap-1">
+          <a href="/" class="nav-link">Overview</a>
+          <a href="/epochs" class="nav-link">Epochs</a>
+          <a href="/agents" class="nav-link">Agents</a>
+          <a href="/clients" class="nav-link">Clients</a>
+          <a href="/verify" class="nav-link">Verify</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main content -->
+  <main class="pt-14 min-h-screen">
+    <slot />
+  </main>
+  
+  <!-- Footer -->
+  <footer class="border-t border-surface-700/50 bg-surface-900/50 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2 text-sm text-text-muted">
+          <span>SwarmOrb</span>
+          <span>·</span>
+          <span class="font-mono">swarmorb.eth</span>
+          <span>·</span>
+          <span>Read-only explorer for SwarmOS</span>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-text-muted">
+          <span>Coordinator: <span class="ens-name">swarmos.eth</span></span>
+          <span>·</span>
+          <span class="font-mono">v1.0.0</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <style is:global>
+    /* Global styles are imported via the layout */
+  </style>
+</body>
+</html>

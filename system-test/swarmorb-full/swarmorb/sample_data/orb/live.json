@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2025-01-16T14:32:45Z",
+  "coordinator": "swarmos.eth",
+  "current_epoch": {
+    "epoch_id": "epoch-002",
+    "started_at": "2025-01-16T00:00:00Z",
+    "ends_at": "2025-01-17T00:00:00Z",
+    "jobs_completed": 67,
+    "jobs_in_progress": 3,
+    "revenue_collected": "780.00",
+    "work_pool": "546.00",
+    "readiness_pool": "234.00"
+  },
+  "agents": [
+    {
+      "ens": "bee23.swarmcompute.eth",
+      "status": "online",
+      "last_heartbeat": "2025-01-16T14:32:30Z",
+      "current_job": null,
+      "jobs_this_epoch": 28,
+      "uptime_this_epoch": 52365,
+      "hardware": {
+        "gpu": "NVIDIA RTX 5090",
+        "vram_gb": 32,
+        "cpu": "AMD Ryzen 9 7950X",
+        "ram_gb": 128
+      }
+    },
+    {
+      "ens": "rig1.swarmcompute.eth",
+      "status": "busy",
+      "last_heartbeat": "2025-01-16T14:32:28Z",
+      "current_job": "job-002-0068",
+      "jobs_this_epoch": 22,
+      "uptime_this_epoch": 51200,
+      "hardware": {
+        "gpu": "NVIDIA RTX 6000 Ada",
+        "vram_gb": 48,
+        "cpu": "Intel Xeon W-3400",
+        "ram_gb": 256
+      }
+    },
+    {
+      "ens": "node7.swarmcompute.eth",
+      "status": "online",
+      "last_heartbeat": "2025-01-16T14:32:25Z",
+      "current_job": null,
+      "jobs_this_epoch": 10,
+      "uptime_this_epoch": 38400,
+      "hardware": {
+        "gpu": "NVIDIA RTX 3090",
+        "vram_gb": 24,
+        "cpu": "AMD Ryzen 7 5800X",
+        "ram_gb": 64
+      }
+    },
+    {
+      "ens": "cuda9.swarmcompute.eth",
+      "status": "busy",
+      "last_heartbeat": "2025-01-16T14:32:20Z",
+      "current_job": "job-002-0069",
+      "jobs_this_epoch": 5,
+      "uptime_this_epoch": 28800,
+      "hardware": {
+        "gpu": "NVIDIA RTX 4090",
+        "vram_gb": 24,
+        "cpu": "Intel i9-13900K",
+        "ram_gb": 96
+      }
+    },
+    {
+      "ens": "newbie.swarmcompute.eth",
+      "status": "online",
+      "last_heartbeat": "2025-01-16T14:32:15Z",
+      "current_job": null,
+      "jobs_this_epoch": 2,
+      "uptime_this_epoch": 7200,
+      "hardware": {
+        "gpu": "NVIDIA RTX 4080",
+        "vram_gb": 16,
+        "cpu": "AMD Ryzen 7 7700X",
+        "ram_gb": 64
+      }
+    }
+  ],
+  "queue": {
+    "pending": 2,
+    "in_progress": 3,
+    "avg_wait_seconds": 1.8
+  },
+  "signature": {
+    "signer": "swarmos.eth",
+    "signature": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab1c",
+    "message_hash": "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9"
+  }
+}

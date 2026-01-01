@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2025-01-16T00:10:00Z",
+  "coordinator": "swarmos.eth",
+  "epochs": [
+    {
+      "epoch_id": "epoch-001",
+      "start_time": "2025-01-15T00:00:00Z",
+      "end_time": "2025-01-16T00:00:00Z",
+      "status": "finalized",
+      "bundle_ref": "./audit/epoch-001",
+      "summary_hash": "a3f2b8c91d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+      "jobs_completed": 105,
+      "total_distributed": "1247.50",
+      "agents_active": 5
+    }
+  ],
+  "stats": {
+    "total_epochs": 1,
+    "total_jobs": 105,
+    "total_distributed": "1247.50",
+    "unique_agents": 5,
+    "unique_clients": 8,
+    "top_agents": [
+      {
+        "ens": "bee23.swarmcompute.eth",
+        "jobs_completed": 47,
+        "total_earned": "513.95",
+        "uptime_hours": 23.0
+      },
+      {
+        "ens": "rig1.swarmcompute.eth",
+        "jobs_completed": 38,
+        "total_earned": "431.17",
+        "uptime_hours": 22.0
+      },
+      {
+        "ens": "node7.swarmcompute.eth",
+        "jobs_completed": 12,
+        "total_earned": "185.75",
+        "uptime_hours": 18.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swarmorb.eth/schemas/summary.schema.json",
+  "title": "Epoch Summary",
+  "description": "Summary statistics for a finalized epoch",
+  "type": "object",
+  "required": ["epoch_id", "start_time", "end_time", "coordinator", "treasury", "agents", "jobs"],
+  "properties": {
+    "epoch_id": {
+      "type": "string",
+      "pattern": "^epoch-\\d{3,}$"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "coordinator": {
+      "type": "string"
+    },
+    "treasury": {
+      "$ref": "#/definitions/TreasurySummary"
+    },
+    "agents": {
+      "$ref": "#/definitions/AgentsSummary"
+    },
+    "jobs": {
+      "$ref": "#/definitions/JobsSummary"
+    },
+    "clients": {
+      "$ref": "#/definitions/ClientsSummary"
+    }
+  },
+  "definitions": {
+    "TreasurySummary": {
+      "type": "object",
+      "required": ["total_revenue", "work_pool", "readiness_pool", "protocol_fee", "distributed"],
+      "properties": {
+        "total_revenue": {
+          "type": "string",
+          "description": "Total USDC collected"
+        },
+        "work_pool": {
+          "type": "string",
+          "description": "70% for job completion"
+        },
+        "readiness_pool": {
+          "type": "string",
+          "description": "30% for uptime"
+        },
+        "protocol_fee": {
+          "type": "string",
+          "description": "Protocol fee (currently 0%)"
+        },
+        "distributed": {
+          "type": "string",
+          "description": "Total distributed to agents"
+        },
+        "dust_rolled": {
+          "type": "string",
+          "description": "Rounding dust rolled to next epoch"
+        }
+      }
+    },
+    "AgentsSummary": {
+      "type": "object",
+      "required": ["total_active", "total_eligible", "payouts"],
+      "properties": {
+        "total_active": {
+          "type": "integer"
+        },
+        "total_eligible": {
+          "type": "integer",
+          "description": "Agents meeting minimum requirements"
+        },
+        "payouts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgentPayout"
+          }
+        }
+      }
+    },
+    "AgentPayout": {
+      "type": "object",
+      "required": ["ens", "jobs_completed", "uptime_seconds", "work_share", "readiness_share", "total_payout"],
+      "properties": {
+        "ens": {
+          "type": "string"
+        },
+        "jobs_completed": {
+          "type": "integer"
+        },
+        "uptime_seconds": {
+          "type": "integer"
+        },
+        "work_share": {
+          "type": "string"
+        },
+        "readiness_share": {
+          "type": "string"
+        },
+        "total_payout": {
+          "type": "string"
+        },
+        "poe_success_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "JobsSummary": {
+      "type": "object",
+      "required": ["total_submitted", "total_completed", "total_failed"],
+      "properties": {
+        "total_submitted": {
+          "type": "integer"
+        },
+        "total_completed": {
+          "type": "integer"
+        },
+        "total_failed": {
+          "type": "integer"
+        },
+        "avg_execution_ms": {
+          "type": "number"
+        },
+        "by_task_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "ClientsSummary": {
+      "type": "object",
+      "required": ["total_active", "total_spent"],
+      "properties": {
+        "total_active": {
+          "type": "integer"
+        },
+        "total_spent": {
+          "type": "string"
+        },
+        "top_clients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ens": { "type": "string" },
+              "jobs_submitted": { "type": "integer" },
+              "total_spent": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

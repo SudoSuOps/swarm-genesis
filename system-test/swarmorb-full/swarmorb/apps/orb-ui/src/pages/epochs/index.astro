@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Epochs">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-semibold text-text-primary">Epochs</h1>
+      <p class="text-text-muted mt-1">All finalized epoch bundles</p>
+    </div>
+    
+    <div class="card overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-surface-800/50">
+          <tr>
+            <th class="table-header">Epoch</th>
+            <th class="table-header">Period</th>
+            <th class="table-header text-right">Jobs</th>
+            <th class="table-header text-right">Distributed</th>
+            <th class="table-header text-right hidden md:table-cell">Agents</th>
+            <th class="table-header text-center">Status</th>
+            <th class="table-header"></th>
+          </tr>
+        </thead>
+        <tbody id="epochs-table">
+          <tr>
+            <td class="table-cell text-text-muted" colspan="7">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div id="summary-hashes" class="mt-8">
+      <h2 class="section-title mb-4">Summary Hashes</h2>
+      <div class="card card-body font-mono text-xs space-y-2" id="hashes-list">
+        Loading...
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    import { fetchIndex, formatUSD, formatDate, truncateHash } from '../../lib/data';
+    
+    async function loadData() {
+      const index = await fetchIndex();
+      if (!index) {
+        document.getElementById('epochs-table')!.innerHTML = 
+          '<tr><td class="table-cell text-error" colspan="7">Failed to load index</td></tr>';
+        return;
+      }
+      
+      const tbody = document.getElementById('epochs-table')!;
+      
+      if (index.epochs.length === 0) {
+        tbody.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="7">No epochs found</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = index.epochs.map(epoch => `
+        <tr class="hover:bg-surface-700/30 transition-colors">
+          <td class="table-cell">
+            <span class="font-mono text-accent">${epoch.epoch_id}</span>
+          </td>
+          <td class="table-cell text-text-secondary text-sm">
+            ${formatDate(epoch.start_time)}<br>
+            <span class="text-text-muted">→ ${formatDate(epoch.end_time)}</span>
+          </td>
+          <td class="table-cell text-right font-mono">${epoch.jobs_completed}</td>
+          <td class="table-cell text-right font-mono text-success">${formatUSD(epoch.total_distributed)}</td>
+          <td class="table-cell text-right font-mono hidden md:table-cell">${epoch.agents_active}</td>
+          <td class="table-cell text-center">
+            <span class="badge badge-${epoch.status}">${epoch.status}</span>
+          </td>
+          <td class="table-cell text-right">
+            <a href="/epochs/${epoch.epoch_id}" class="text-accent hover:underline text-sm">View →</a>
+          </td>
+        </tr>
+      `).join('');
+      
+      // Hashes list
+      const hashesEl = document.getElementById('hashes-list')!;
+      hashesEl.innerHTML = index.epochs.map(epoch => `
+        <div class="flex items-center justify-between py-1 border-b border-surface-700/50 last:border-0">
+          <span class="text-accent">${epoch.epoch_id}</span>
+          <span class="text-text-muted">${epoch.summary_hash}</span>
+        </div>
+      `).join('');
+    }
+    
+    loadData();
+  </script>
+</Base>

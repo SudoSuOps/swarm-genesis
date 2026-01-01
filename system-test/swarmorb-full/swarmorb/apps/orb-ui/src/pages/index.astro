@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Overview">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-semibold text-text-primary">SwarmOS Overview</h1>
+      <p class="text-text-muted mt-1">Real-time status and latest epoch data</p>
+    </div>
+    
+    <!-- Live Status Section -->
+    <section class="mb-8">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+        <h2 class="section-title">Live Status</h2>
+        <span id="live-badge" class="px-2 py-0.5 text-xs font-bold rounded bg-success/20 text-success border border-success/30 animate-pulse hidden">LIVE</span>
+        <span id="live-timestamp" class="text-xs text-text-muted font-mono ml-auto"></span>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="card card-body">
+          <div id="live-epoch" class="stat-value">--</div>
+          <div class="stat-label">Current Epoch</div>
+        </div>
+        <div class="card card-body">
+          <div id="live-jobs" class="stat-value">--</div>
+          <div class="stat-label">Jobs Completed</div>
+        </div>
+        <div class="card card-body">
+          <div id="live-agents" class="stat-value">--</div>
+          <div class="stat-label">Agents Online</div>
+        </div>
+        <div class="card card-body">
+          <div id="live-queue" class="stat-value">--</div>
+          <div class="stat-label">Queue Depth</div>
+        </div>
+      </div>
+      
+      <!-- Current epoch pools -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div class="card card-body">
+          <div id="live-revenue" class="stat-value text-lg">--</div>
+          <div class="stat-label">Revenue This Epoch</div>
+        </div>
+        <div class="card card-body">
+          <div id="live-work-pool" class="stat-value text-lg text-success">--</div>
+          <div class="stat-label">Work Pool (70%)</div>
+        </div>
+        <div class="card card-body">
+          <div id="live-readiness-pool" class="stat-value text-lg text-info">--</div>
+          <div class="stat-label">Readiness Pool (30%)</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Aggregate Stats -->
+    <section class="mb-8">
+      <h2 class="section-title mb-4">All-Time Statistics</h2>
+      
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="card card-body">
+          <div id="stat-epochs" class="stat-value">--</div>
+          <div class="stat-label">Total Epochs</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-jobs" class="stat-value">--</div>
+          <div class="stat-label">Total Jobs</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-distributed" class="stat-value">--</div>
+          <div class="stat-label">Total Distributed</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-agents" class="stat-value">--</div>
+          <div class="stat-label">Unique Agents</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-clients" class="stat-value">--</div>
+          <div class="stat-label">Unique Clients</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Latest Epoch -->
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="section-title">Latest Finalized Epoch</h2>
+        <a href="/epochs" class="text-sm text-accent hover:underline">View all epochs →</a>
+      </div>
+      
+      <div id="latest-epoch" class="card">
+        <div class="card-header flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span id="latest-id" class="font-mono text-accent">--</span>
+            <span class="badge badge-finalized">Finalized</span>
+          </div>
+          <span id="latest-dates" class="text-sm text-text-muted"></span>
+        </div>
+        <div class="card-body">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <div id="latest-jobs" class="text-xl font-semibold font-mono">--</div>
+              <div class="text-xs text-text-muted">Jobs Completed</div>
+            </div>
+            <div>
+              <div id="latest-distributed" class="text-xl font-semibold font-mono text-success">--</div>
+              <div class="text-xs text-text-muted">Distributed</div>
+            </div>
+            <div>
+              <div id="latest-agents" class="text-xl font-semibold font-mono">--</div>
+              <div class="text-xs text-text-muted">Active Agents</div>
+            </div>
+            <div>
+              <a id="latest-link" href="#" class="btn btn-secondary text-xs">View Details →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Top Agents -->
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="section-title">Top Agents</h2>
+        <a href="/agents" class="text-sm text-accent hover:underline">View all agents →</a>
+      </div>
+      
+      <div class="card overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-800/50">
+            <tr>
+              <th class="table-header">Agent</th>
+              <th class="table-header text-right">Jobs</th>
+              <th class="table-header text-right">Earned</th>
+              <th class="table-header text-right hidden md:table-cell">Uptime</th>
+            </tr>
+          </thead>
+          <tbody id="top-agents-table">
+            <tr>
+              <td class="table-cell text-text-muted" colspan="4">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    import { fetchIndex, fetchLive, fetchAPIStats, formatUSD, formatDate, formatRelative } from '../lib/data';
+
+    let isLive = false;
+    let refreshInterval: number | null = null;
+
+    async function loadData() {
+      // Check if API is available (indicates live mode)
+      const apiCheck = await fetchAPIStats();
+      if (apiCheck) {
+        isLive = true;
+        const liveBadge = document.getElementById('live-badge');
+        if (liveBadge) liveBadge.classList.remove('hidden');
+      }
+
+      // Fetch live state
+      const live = await fetchLive();
+      if (live) {
+        document.getElementById('live-timestamp')!.textContent = isLive ? 'just now' : formatRelative(live.timestamp);
+        document.getElementById('live-epoch')!.textContent = live.current_epoch.epoch_id;
+        document.getElementById('live-jobs')!.textContent = live.current_epoch.jobs_completed.toString();
+        document.getElementById('live-agents')!.textContent = live.agents.filter(a => a.status !== 'offline').length.toString();
+        document.getElementById('live-queue')!.textContent = (live.queue.pending + live.queue.in_progress).toString();
+        document.getElementById('live-revenue')!.textContent = formatUSD(live.current_epoch.revenue_collected);
+        document.getElementById('live-work-pool')!.textContent = formatUSD(live.current_epoch.work_pool);
+        document.getElementById('live-readiness-pool')!.textContent = formatUSD(live.current_epoch.readiness_pool);
+      }
+
+      // Fetch index
+      const index = await fetchIndex();
+      if (index) {
+        // Aggregate stats
+        document.getElementById('stat-epochs')!.textContent = index.stats.total_epochs.toString();
+        document.getElementById('stat-jobs')!.textContent = index.stats.total_jobs.toLocaleString();
+        document.getElementById('stat-distributed')!.textContent = formatUSD(index.stats.total_distributed);
+        document.getElementById('stat-agents')!.textContent = index.stats.unique_agents.toString();
+        document.getElementById('stat-clients')!.textContent = index.stats.unique_clients.toString();
+
+        // Latest epoch
+        if (index.epochs.length > 0) {
+          const latest = index.epochs[0];
+          document.getElementById('latest-id')!.textContent = latest.epoch_id;
+          document.getElementById('latest-dates')!.textContent = `${formatDate(latest.start_time)} — ${formatDate(latest.end_time)}`;
+          document.getElementById('latest-jobs')!.textContent = latest.jobs_completed.toString();
+          document.getElementById('latest-distributed')!.textContent = formatUSD(latest.total_distributed);
+          document.getElementById('latest-agents')!.textContent = latest.agents_active.toString();
+          (document.getElementById('latest-link') as HTMLAnchorElement).href = `/epochs/${latest.epoch_id}`;
+        }
+
+        // Top agents table
+        const tbody = document.getElementById('top-agents-table')!;
+        if (index.stats.top_agents.length > 0) {
+          tbody.innerHTML = index.stats.top_agents.map(agent => `
+            <tr class="hover:bg-surface-700/30 transition-colors">
+              <td class="table-cell">
+                <span class="ens-name">${agent.ens}</span>
+              </td>
+              <td class="table-cell text-right font-mono">${agent.jobs_completed}</td>
+              <td class="table-cell text-right font-mono text-success">${formatUSD(agent.total_earned)}</td>
+              <td class="table-cell text-right font-mono text-text-muted hidden md:table-cell">${agent.uptime_hours.toFixed(1)}h</td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="4">No agents found</td></tr>';
+        }
+      }
+
+      // Start auto-refresh if live
+      if (isLive && !refreshInterval) {
+        refreshInterval = setInterval(loadData, 10000) as unknown as number; // Refresh every 10s
+      }
+    }
+
+    loadData();
+  </script>
+</Base>

@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Clients">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-semibold text-text-primary">Clients</h1>
+      <p class="text-text-muted mt-1">SwarmOS client activity aggregated from epoch data</p>
+    </div>
+    
+    <!-- Summary Stats -->
+    <section class="mb-8">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="card card-body">
+          <div id="stat-clients" class="stat-value">--</div>
+          <div class="stat-label">Unique Clients</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-jobs" class="stat-value">--</div>
+          <div class="stat-label">Total Jobs</div>
+        </div>
+        <div class="card card-body">
+          <div id="stat-spent" class="stat-value text-warning">--</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Client List (aggregated) -->
+    <section>
+      <h2 class="section-title mb-4">Top Clients by Spend</h2>
+      <p class="text-sm text-text-muted mb-4">Aggregated from all finalized epochs</p>
+      
+      <div class="card overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-800/50">
+            <tr>
+              <th class="table-header">Client</th>
+              <th class="table-header text-right">Jobs Submitted</th>
+              <th class="table-header text-right">Total Spent</th>
+              <th class="table-header text-right hidden md:table-cell">Avg per Job</th>
+            </tr>
+          </thead>
+          <tbody id="clients-table">
+            <tr>
+              <td class="table-cell text-text-muted" colspan="4">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    import { fetchIndex, fetchEpochSummary, formatUSD } from '../lib/data';
+    
+    async function loadData() {
+      const index = await fetchIndex();
+      
+      if (!index) {
+        document.getElementById('clients-table')!.innerHTML = 
+          '<tr><td class="table-cell text-error" colspan="4">Failed to load index</td></tr>';
+        return;
+      }
+      
+      // Summary stats
+      document.getElementById('stat-clients')!.textContent = index.stats.unique_clients.toString();
+      document.getElementById('stat-jobs')!.textContent = index.stats.total_jobs.toLocaleString();
+      document.getElementById('stat-spent')!.textContent = formatUSD(index.stats.total_distributed);
+      
+      // Aggregate clients from all epochs
+      const clientMap: Map<string, { jobs: number; spent: number }> = new Map();
+      
+      for (const epochRef of index.epochs) {
+        const summary = await fetchEpochSummary(epochRef.epoch_id);
+        if (!summary || !summary.clients.top_clients) continue;
+        
+        for (const client of summary.clients.top_clients) {
+          const existing = clientMap.get(client.ens) || { jobs: 0, spent: 0 };
+          existing.jobs += client.jobs_submitted;
+          existing.spent += parseFloat(client.total_spent);
+          clientMap.set(client.ens, existing);
+        }
+      }
+      
+      // Sort by spend
+      const clients = Array.from(clientMap.entries())
+        .map(([ens, data]) => ({ ens, ...data }))
+        .sort((a, b) => b.spent - a.spent);
+      
+      const tbody = document.getElementById('clients-table')!;
+      
+      if (clients.length === 0) {
+        tbody.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="4">No client data available</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = clients.map(client => {
+        const avgPerJob = client.jobs > 0 ? client.spent / client.jobs : 0;
+        return `
+          <tr class="hover:bg-surface-700/30 transition-colors">
+            <td class="table-cell ens-name">${client.ens}</td>
+            <td class="table-cell text-right font-mono">${client.jobs}</td>
+            <td class="table-cell text-right font-mono text-warning">${formatUSD(client.spent)}</td>
+            <td class="table-cell text-right font-mono text-text-muted hidden md:table-cell">${formatUSD(avgPerJob)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+    
+    loadData();
+  </script>
+</Base>

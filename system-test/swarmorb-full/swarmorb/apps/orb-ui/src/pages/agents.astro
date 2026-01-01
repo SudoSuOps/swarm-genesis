@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Agents">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-semibold text-text-primary">Agents</h1>
+      <p class="text-text-muted mt-1">All registered SwarmOS compute operators</p>
+    </div>
+    
+    <!-- Live Agents -->
+    <section class="mb-8">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+        <h2 class="section-title">Live Agents</h2>
+        <span id="live-count" class="text-sm text-text-muted ml-2">(--)</span>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="live-agents-grid">
+        <div class="card card-body text-text-muted">Loading live state...</div>
+      </div>
+    </section>
+    
+    <!-- Top Agents All-Time -->
+    <section>
+      <h2 class="section-title mb-4">Top Agents (All-Time)</h2>
+      
+      <div class="card overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-800/50">
+            <tr>
+              <th class="table-header">Agent</th>
+              <th class="table-header text-right">Jobs Completed</th>
+              <th class="table-header text-right">Total Earned</th>
+              <th class="table-header text-right hidden md:table-cell">Total Uptime</th>
+            </tr>
+          </thead>
+          <tbody id="top-agents-table">
+            <tr>
+              <td class="table-cell text-text-muted" colspan="4">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    import { fetchIndex, fetchLive, formatUSD, formatRelative, formatHours } from '../lib/data';
+    
+    function getStatusBadge(status: string) {
+      const badges: Record<string, string> = {
+        online: 'badge-online',
+        busy: 'badge-busy',
+        offline: 'badge-offline',
+        draining: 'badge-offline'
+      };
+      return badges[status] || 'badge-offline';
+    }
+    
+    async function loadData() {
+      // Live agents
+      const live = await fetchLive();
+      const liveGrid = document.getElementById('live-agents-grid')!;
+      
+      if (live && live.agents.length > 0) {
+        document.getElementById('live-count')!.textContent = `(${live.agents.length})`;
+        
+        liveGrid.innerHTML = live.agents.map(agent => `
+          <div class="card card-body">
+            <div class="flex items-center justify-between mb-3">
+              <span class="ens-name text-sm">${agent.ens}</span>
+              <span class="badge ${getStatusBadge(agent.status)}">${agent.status}</span>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-text-muted">Jobs this epoch</span>
+                <span class="font-mono">${agent.jobs_this_epoch}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-text-muted">Uptime</span>
+                <span class="font-mono">${formatHours(agent.uptime_this_epoch)}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-text-muted">Last heartbeat</span>
+                <span class="font-mono text-xs">${formatRelative(agent.last_heartbeat)}</span>
+              </div>
+              ${agent.current_job ? `
+              <div class="flex justify-between">
+                <span class="text-text-muted">Current job</span>
+                <span class="font-mono text-xs text-warning">${agent.current_job}</span>
+              </div>
+              ` : ''}
+              <div class="pt-2 border-t border-surface-700/50 text-xs text-text-muted">
+                <span>${agent.hardware.gpu}</span>
+                <span class="mx-1">·</span>
+                <span>${agent.hardware.vram_gb}GB VRAM</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        liveGrid.innerHTML = '<div class="card card-body text-text-muted">No live agents</div>';
+      }
+      
+      // Top agents from index
+      const index = await fetchIndex();
+      const topTable = document.getElementById('top-agents-table')!;
+      
+      if (index && index.stats.top_agents.length > 0) {
+        topTable.innerHTML = index.stats.top_agents.map((agent, i) => `
+          <tr class="hover:bg-surface-700/30 transition-colors">
+            <td class="table-cell">
+              <div class="flex items-center gap-3">
+                <span class="text-text-muted font-mono text-xs">#${i + 1}</span>
+                <span class="ens-name">${agent.ens}</span>
+              </div>
+            </td>
+            <td class="table-cell text-right font-mono">${agent.jobs_completed}</td>
+            <td class="table-cell text-right font-mono text-success">${formatUSD(agent.total_earned)}</td>
+            <td class="table-cell text-right font-mono text-text-muted hidden md:table-cell">${agent.uptime_hours.toFixed(1)}h</td>
+          </tr>
+        `).join('');
+      } else {
+        topTable.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="4">No agent data</td></tr>';
+      }
+    }
+    
+    loadData();
+  </script>
+</Base>

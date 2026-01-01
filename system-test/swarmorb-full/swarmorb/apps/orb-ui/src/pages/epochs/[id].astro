@@ -1,0 +1,284 @@
+---
+import Base from '../../layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Generate static paths from sample data
+export function getStaticPaths() {
+  // Read the index.json to get epoch list
+  const dataDir = path.join(process.cwd(), 'public/data/orb');
+  
+  try {
+    const indexPath = path.join(dataDir, 'index.json');
+    if (fs.existsSync(indexPath)) {
+      const index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+      return index.epochs.map((epoch: any) => ({
+        params: { id: epoch.epoch_id }
+      }));
+    }
+  } catch (e) {
+    console.warn('Could not read index.json, using fallback epochs');
+  }
+  
+  // Fallback: scan audit directory
+  const auditDir = path.join(process.cwd(), 'public/data/audit');
+  if (fs.existsSync(auditDir)) {
+    const epochs = fs.readdirSync(auditDir)
+      .filter(d => d.startsWith('epoch-'))
+      .map(id => ({ params: { id } }));
+    if (epochs.length > 0) return epochs;
+  }
+  
+  // Default fallback
+  return [{ params: { id: 'epoch-001' } }];
+}
+
+// Get epoch ID from URL
+const { id } = Astro.params;
+---
+
+<Base title={`Epoch ${id}`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 text-sm text-text-muted mb-2">
+        <a href="/epochs" class="hover:text-text-primary">Epochs</a>
+        <span>→</span>
+        <span class="text-accent font-mono">{id}</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-semibold text-text-primary font-mono">{id}</h1>
+        <span id="epoch-status" class="badge badge-finalized">Loading...</span>
+      </div>
+      <p id="epoch-period" class="text-text-muted mt-1">Loading...</p>
+    </div>
+    
+    <!-- Treasury -->
+    <section class="mb-8">
+      <h2 class="section-title mb-4">Treasury</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="card card-body">
+          <div id="treasury-revenue" class="stat-value text-lg">--</div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+        <div class="card card-body">
+          <div id="treasury-work" class="stat-value text-lg text-success">--</div>
+          <div class="stat-label">Work Pool (70%)</div>
+        </div>
+        <div class="card card-body">
+          <div id="treasury-readiness" class="stat-value text-lg text-info">--</div>
+          <div class="stat-label">Readiness Pool (30%)</div>
+        </div>
+        <div class="card card-body">
+          <div id="treasury-fee" class="stat-value text-lg">--</div>
+          <div class="stat-label">Protocol Fee</div>
+        </div>
+        <div class="card card-body">
+          <div id="treasury-distributed" class="stat-value text-lg text-accent">--</div>
+          <div class="stat-label">Distributed</div>
+        </div>
+        <div class="card card-body">
+          <div id="treasury-dust" class="stat-value text-lg text-text-muted">--</div>
+          <div class="stat-label">Dust Rolled</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Jobs -->
+    <section class="mb-8">
+      <h2 class="section-title mb-4">Jobs</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="card card-body">
+          <div id="jobs-submitted" class="stat-value text-lg">--</div>
+          <div class="stat-label">Submitted</div>
+        </div>
+        <div class="card card-body">
+          <div id="jobs-completed" class="stat-value text-lg text-success">--</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="card card-body">
+          <div id="jobs-failed" class="stat-value text-lg text-error">--</div>
+          <div class="stat-label">Failed</div>
+        </div>
+        <div class="card card-body">
+          <div id="jobs-avg-ms" class="stat-value text-lg">--</div>
+          <div class="stat-label">Avg Execution</div>
+        </div>
+      </div>
+      
+      <div class="card card-body">
+        <h3 class="text-sm font-medium text-text-secondary mb-3">Jobs by Task Type</h3>
+        <div id="jobs-by-type" class="space-y-2">Loading...</div>
+      </div>
+    </section>
+    
+    <!-- Agent Payouts -->
+    <section class="mb-8">
+      <h2 class="section-title mb-4">Agent Payouts</h2>
+      <div class="flex items-center gap-4 mb-4 text-sm text-text-muted">
+        <span id="agents-active">-- active</span>
+        <span>·</span>
+        <span id="agents-eligible">-- eligible for payout</span>
+      </div>
+      
+      <div class="card overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-800/50">
+            <tr>
+              <th class="table-header">Agent</th>
+              <th class="table-header text-right">Jobs</th>
+              <th class="table-header text-right hidden md:table-cell">Uptime</th>
+              <th class="table-header text-right">Work Share</th>
+              <th class="table-header text-right hidden lg:table-cell">Readiness</th>
+              <th class="table-header text-right">Total Payout</th>
+              <th class="table-header text-right hidden md:table-cell">PoE Rate</th>
+            </tr>
+          </thead>
+          <tbody id="payouts-table">
+            <tr>
+              <td class="table-cell text-text-muted" colspan="7">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+    <!-- Clients -->
+    <section class="mb-8">
+      <h2 class="section-title mb-4">Top Clients</h2>
+      <div class="card overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-800/50">
+            <tr>
+              <th class="table-header">Client</th>
+              <th class="table-header text-right">Jobs Submitted</th>
+              <th class="table-header text-right">Total Spent</th>
+            </tr>
+          </thead>
+          <tbody id="clients-table">
+            <tr>
+              <td class="table-cell text-text-muted" colspan="3">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+    <!-- Verification -->
+    <section>
+      <h2 class="section-title mb-4">Verification</h2>
+      <div class="card card-body">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm text-text-muted">Coordinator:</span>
+          <span id="coordinator" class="ens-name">--</span>
+        </div>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm text-text-muted">Summary Hash:</span>
+          <span id="summary-hash" class="hash">--</span>
+        </div>
+        <div class="mt-4">
+          <a href={`/verify?epoch=${id}`} class="btn btn-secondary text-sm">
+            Verify Hashes →
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <script define:vars={{ epochId: id }}>
+    import { fetchEpochSummary, fetchIndex, formatUSD, formatDate, formatHours } from '../../lib/data';
+    
+    async function loadData() {
+      // Fetch summary
+      const summary = await fetchEpochSummary(epochId);
+      
+      if (!summary) {
+        document.getElementById('epoch-status')!.textContent = 'Not Found';
+        document.getElementById('epoch-status')!.className = 'badge bg-error/20 text-error';
+        return;
+      }
+      
+      // Period
+      document.getElementById('epoch-period')!.textContent = 
+        `${formatDate(summary.start_time)} — ${formatDate(summary.end_time)}`;
+      document.getElementById('epoch-status')!.textContent = 'Finalized';
+      
+      // Treasury
+      document.getElementById('treasury-revenue')!.textContent = formatUSD(summary.treasury.total_revenue);
+      document.getElementById('treasury-work')!.textContent = formatUSD(summary.treasury.work_pool);
+      document.getElementById('treasury-readiness')!.textContent = formatUSD(summary.treasury.readiness_pool);
+      document.getElementById('treasury-fee')!.textContent = formatUSD(summary.treasury.protocol_fee);
+      document.getElementById('treasury-distributed')!.textContent = formatUSD(summary.treasury.distributed);
+      document.getElementById('treasury-dust')!.textContent = formatUSD(summary.treasury.dust_rolled);
+      
+      // Jobs
+      document.getElementById('jobs-submitted')!.textContent = summary.jobs.total_submitted.toString();
+      document.getElementById('jobs-completed')!.textContent = summary.jobs.total_completed.toString();
+      document.getElementById('jobs-failed')!.textContent = summary.jobs.total_failed.toString();
+      document.getElementById('jobs-avg-ms')!.textContent = `${summary.jobs.avg_execution_ms}ms`;
+      
+      // Jobs by type
+      const byType = document.getElementById('jobs-by-type')!;
+      const taskTypes = Object.entries(summary.jobs.by_task_type || {});
+      if (taskTypes.length > 0) {
+        byType.innerHTML = taskTypes.map(([type, count]) => `
+          <div class="flex items-center justify-between py-2 border-b border-surface-700/50 last:border-0">
+            <span class="font-mono text-sm text-accent">${type}</span>
+            <span class="font-mono text-text-secondary">${count}</span>
+          </div>
+        `).join('');
+      } else {
+        byType.innerHTML = '<span class="text-text-muted">No task types recorded</span>';
+      }
+      
+      // Agents
+      document.getElementById('agents-active')!.textContent = `${summary.agents.total_active} active`;
+      document.getElementById('agents-eligible')!.textContent = `${summary.agents.total_eligible} eligible for payout`;
+      
+      const payoutsTable = document.getElementById('payouts-table')!;
+      if (summary.agents.payouts.length > 0) {
+        payoutsTable.innerHTML = summary.agents.payouts.map(p => `
+          <tr class="hover:bg-surface-700/30 transition-colors">
+            <td class="table-cell ens-name">${p.ens}</td>
+            <td class="table-cell text-right font-mono">${p.jobs_completed}</td>
+            <td class="table-cell text-right font-mono text-text-muted hidden md:table-cell">${formatHours(p.uptime_seconds)}</td>
+            <td class="table-cell text-right font-mono text-success">${formatUSD(p.work_share)}</td>
+            <td class="table-cell text-right font-mono text-info hidden lg:table-cell">${formatUSD(p.readiness_share)}</td>
+            <td class="table-cell text-right font-mono text-accent">${formatUSD(p.total_payout)}</td>
+            <td class="table-cell text-right font-mono hidden md:table-cell ${p.poe_success_rate >= 0.95 ? 'text-success' : p.poe_success_rate >= 0.8 ? 'text-warning' : 'text-error'}">${(p.poe_success_rate * 100).toFixed(0)}%</td>
+          </tr>
+        `).join('');
+      } else {
+        payoutsTable.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="7">No payouts</td></tr>';
+      }
+      
+      // Clients
+      const clientsTable = document.getElementById('clients-table')!;
+      if (summary.clients.top_clients && summary.clients.top_clients.length > 0) {
+        clientsTable.innerHTML = summary.clients.top_clients.map(c => `
+          <tr class="hover:bg-surface-700/30 transition-colors">
+            <td class="table-cell ens-name">${c.ens}</td>
+            <td class="table-cell text-right font-mono">${c.jobs_submitted}</td>
+            <td class="table-cell text-right font-mono text-warning">${formatUSD(c.total_spent)}</td>
+          </tr>
+        `).join('');
+      } else {
+        clientsTable.innerHTML = '<tr><td class="table-cell text-text-muted" colspan="3">No client data</td></tr>';
+      }
+      
+      // Verification
+      document.getElementById('coordinator')!.textContent = summary.coordinator;
+      
+      // Get hash from index
+      const index = await fetchIndex();
+      if (index) {
+        const epochRef = index.epochs.find(e => e.epoch_id === epochId);
+        if (epochRef) {
+          document.getElementById('summary-hash')!.textContent = epochRef.summary_hash;
+        }
+      }
+    }
+    
+    loadData();
+  </script>
+</Base>

@@ -1,0 +1,20 @@
+{
+  "name": "orb-ui",
+  "version": "1.0.0",
+  "description": "SwarmOrb Explorer - Read-only SwarmOS epoch viewer",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.10.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19"
+  }
+}

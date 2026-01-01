@@ -1,0 +1,26 @@
+# SwarmOS Epoch Signature Bundle
+# Epoch: epoch-001
+# Coordinator: swarmos.eth
+# Generated: 2025-01-16T00:05:23Z
+
+## Artifact Hashes (SHA256)
+SUMMARY.json: a3f2b8c91d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a
+jobs.json: b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3
+agents.json: c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4
+poe_bundle.json: d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5
+
+## Manifest Hash
+manifest_hash: e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6
+
+## EIP-191 Signature
+signer: swarmos.eth
+address: 0x742d35Cc6634C0532925a3b844Bc9e7595f8bE2a
+signature: 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1b
+
+## Verification
+To verify this epoch:
+1. Compute SHA256 of each artifact file
+2. Compare against hashes above
+3. Compute SHA256 of concatenated hashes (manifest_hash)
+4. Recover signer from EIP-191 signature
+5. Verify signer matches coordinator ENS

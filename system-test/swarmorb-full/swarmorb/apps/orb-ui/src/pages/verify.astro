@@ -1,0 +1,289 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Verify">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-semibold text-text-primary">Verify Epoch</h1>
+      <p class="text-text-muted mt-1">Verify artifact hashes against SIGNATURE.txt</p>
+    </div>
+    
+    <!-- Epoch Selector -->
+    <section class="mb-8">
+      <div class="card card-body">
+        <label class="block text-sm text-text-secondary mb-2">Select Epoch</label>
+        <select id="epoch-select" class="w-full bg-surface-700 border border-surface-600 rounded px-4 py-2 text-text-primary font-mono">
+          <option value="">Loading epochs...</option>
+        </select>
+      </div>
+    </section>
+    
+    <!-- Verification Panel -->
+    <section id="verification-panel" class="hidden">
+      <div class="card">
+        <div class="card-header flex items-center justify-between">
+          <h2 class="section-title">Verification Results</h2>
+          <button id="run-verify" class="btn btn-primary text-sm">
+            Run Verification
+          </button>
+        </div>
+        
+        <div class="card-body">
+          <!-- SIGNATURE.txt content -->
+          <div class="mb-6">
+            <h3 class="text-sm font-medium text-text-secondary mb-2">SIGNATURE.txt</h3>
+            <pre id="signature-content" class="bg-surface-900 rounded p-4 text-xs font-mono text-text-muted overflow-x-auto max-h-48">
+Loading...
+            </pre>
+          </div>
+          
+          <!-- Verification results -->
+          <div id="results-container" class="hidden">
+            <h3 class="text-sm font-medium text-text-secondary mb-4">Hash Verification</h3>
+            <div id="verification-results" class="space-y-3">
+              <!-- Results will be inserted here -->
+            </div>
+            
+            <!-- Overall status -->
+            <div id="overall-status" class="mt-6 p-4 rounded border">
+              <!-- Status will be inserted here -->
+            </div>
+          </div>
+          
+          <!-- TODO: Signature verification -->
+          <div class="mt-6 p-4 bg-surface-700/50 rounded border border-surface-600/50">
+            <h3 class="text-sm font-medium text-warning mb-2">⚠️ Signature Verification</h3>
+            <p class="text-sm text-text-muted">
+              EIP-191 signature verification is not yet implemented in this version.
+              The signature data is displayed above for manual verification.
+            </p>
+            <p class="text-xs text-text-dim mt-2 font-mono">
+              TODO: Implement eth_account signature recovery in browser
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- How it works -->
+    <section class="mt-8">
+      <div class="card card-body">
+        <h2 class="section-title mb-4">How Verification Works</h2>
+        <ol class="space-y-3 text-sm text-text-secondary">
+          <li class="flex gap-3">
+            <span class="text-accent font-mono">1.</span>
+            <span>Fetch SIGNATURE.txt from epoch bundle</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent font-mono">2.</span>
+            <span>Parse expected SHA256 hashes for each artifact</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent font-mono">3.</span>
+            <span>Download each artifact and compute SHA256 using WebCrypto</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent font-mono">4.</span>
+            <span>Compare computed hash against expected hash</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent font-mono">5.</span>
+            <span>Display PASS/FAIL for each artifact</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    import { fetchIndex, fetchSignature } from '../lib/data';
+    
+    const DATA_BASE = '/data';
+    
+    interface HashEntry {
+      filename: string;
+      expected: string;
+    }
+    
+    /**
+     * Parse SIGNATURE.txt to extract artifact hashes
+     */
+    function parseSignature(content: string): HashEntry[] {
+      const entries: HashEntry[] = [];
+      const lines = content.split('\n');
+      
+      for (const line of lines) {
+        // Match pattern: filename.ext: hexhash
+        const match = line.match(/^(\w+\.\w+):\s*([a-f0-9]{64})\s*$/i);
+        if (match) {
+          entries.push({
+            filename: match[1],
+            expected: match[2].toLowerCase()
+          });
+        }
+      }
+      
+      return entries;
+    }
+    
+    /**
+     * Compute SHA256 hash of a file using WebCrypto
+     */
+    async function computeSHA256(url: string): Promise<string | null> {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) return null;
+        
+        const buffer = await response.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        console.error('Hash computation failed:', e);
+        return null;
+      }
+    }
+    
+    /**
+     * Verify a single artifact
+     */
+    async function verifyArtifact(epochId: string, entry: HashEntry): Promise<{
+      filename: string;
+      expected: string;
+      computed: string | null;
+      pass: boolean;
+    }> {
+      const url = `${DATA_BASE}/audit/${epochId}/${entry.filename}`;
+      const computed = await computeSHA256(url);
+      const pass = computed !== null && computed === entry.expected;
+      
+      return {
+        filename: entry.filename,
+        expected: entry.expected,
+        computed,
+        pass
+      };
+    }
+    
+    let currentEpochId: string | null = null;
+    let signatureContent: string | null = null;
+    
+    async function loadEpochs() {
+      const index = await fetchIndex();
+      const select = document.getElementById('epoch-select') as HTMLSelectElement;
+      
+      if (!index || index.epochs.length === 0) {
+        select.innerHTML = '<option value="">No epochs available</option>';
+        return;
+      }
+      
+      select.innerHTML = '<option value="">Select an epoch...</option>' +
+        index.epochs.map(e => `<option value="${e.epoch_id}">${e.epoch_id}</option>`).join('');
+      
+      // Check URL param
+      const params = new URLSearchParams(window.location.search);
+      const epochParam = params.get('epoch');
+      if (epochParam) {
+        select.value = epochParam;
+        loadEpochSignature(epochParam);
+      }
+    }
+    
+    async function loadEpochSignature(epochId: string) {
+      currentEpochId = epochId;
+      const panel = document.getElementById('verification-panel')!;
+      const sigContent = document.getElementById('signature-content')!;
+      const resultsContainer = document.getElementById('results-container')!;
+      
+      panel.classList.remove('hidden');
+      resultsContainer.classList.add('hidden');
+      sigContent.textContent = 'Loading...';
+      
+      signatureContent = await fetchSignature(epochId);
+      
+      if (!signatureContent) {
+        sigContent.textContent = 'Failed to load SIGNATURE.txt';
+        return;
+      }
+      
+      sigContent.textContent = signatureContent;
+    }
+    
+    async function runVerification() {
+      if (!currentEpochId || !signatureContent) return;
+      
+      const resultsContainer = document.getElementById('results-container')!;
+      const resultsEl = document.getElementById('verification-results')!;
+      const statusEl = document.getElementById('overall-status')!;
+      
+      resultsContainer.classList.remove('hidden');
+      resultsEl.innerHTML = '<div class="text-text-muted">Verifying artifacts...</div>';
+      
+      // Parse hashes
+      const entries = parseSignature(signatureContent);
+      
+      if (entries.length === 0) {
+        resultsEl.innerHTML = '<div class="text-warning">No artifact hashes found in SIGNATURE.txt</div>';
+        return;
+      }
+      
+      // Verify each
+      const results = await Promise.all(
+        entries.map(entry => verifyArtifact(currentEpochId!, entry))
+      );
+      
+      // Display results
+      resultsEl.innerHTML = results.map(r => `
+        <div class="flex items-center justify-between p-3 rounded ${r.pass ? 'bg-success/10 border border-success/30' : 'bg-error/10 border border-error/30'}">
+          <div>
+            <span class="font-mono text-sm ${r.pass ? 'text-success' : 'text-error'}">${r.filename}</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="badge ${r.pass ? 'badge-online' : 'bg-error/20 text-error border-error/30'}">${r.pass ? 'PASS' : 'FAIL'}</span>
+          </div>
+        </div>
+        <div class="text-xs font-mono ml-3 -mt-2 mb-2 space-y-1">
+          <div class="text-text-muted">Expected: ${r.expected}</div>
+          <div class="${r.computed === r.expected ? 'text-success' : 'text-error'}">Computed: ${r.computed || 'FETCH_FAILED'}</div>
+        </div>
+      `).join('');
+      
+      // Overall status
+      const allPass = results.every(r => r.pass);
+      const passCount = results.filter(r => r.pass).length;
+      
+      statusEl.className = `mt-6 p-4 rounded border ${allPass ? 'bg-success/10 border-success/30' : 'bg-error/10 border-error/30'}`;
+      statusEl.innerHTML = `
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">${allPass ? '✓' : '✗'}</span>
+          <div>
+            <div class="font-semibold ${allPass ? 'text-success' : 'text-error'}">
+              ${allPass ? 'All Hashes Verified' : 'Verification Failed'}
+            </div>
+            <div class="text-sm text-text-muted">
+              ${passCount}/${results.length} artifacts passed
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Event listeners
+    document.getElementById('epoch-select')?.addEventListener('change', (e) => {
+      const value = (e.target as HTMLSelectElement).value;
+      if (value) {
+        loadEpochSignature(value);
+        // Update URL
+        const url = new URL(window.location.href);
+        url.searchParams.set('epoch', value);
+        window.history.replaceState({}, '', url.toString());
+      }
+    });
+    
+    document.getElementById('run-verify')?.addEventListener('click', runVerification);
+    
+    // Initial load
+    loadEpochs();
+  </script>
+</Base>

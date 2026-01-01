@@ -1,0 +1,87 @@
+{
+  "epoch_id": "epoch-001",
+  "start_time": "2025-01-15T00:00:00Z",
+  "end_time": "2025-01-16T00:00:00Z",
+  "coordinator": "swarmos.eth",
+  "treasury": {
+    "total_revenue": "1250.00",
+    "work_pool": "875.00",
+    "readiness_pool": "375.00",
+    "protocol_fee": "0.00",
+    "distributed": "1247.50",
+    "dust_rolled": "2.50"
+  },
+  "agents": {
+    "total_active": 5,
+    "total_eligible": 4,
+    "payouts": [
+      {
+        "ens": "bee23.swarmcompute.eth",
+        "jobs_completed": 47,
+        "uptime_seconds": 82800,
+        "work_share": "410.83",
+        "readiness_share": "103.12",
+        "total_payout": "513.95",
+        "poe_success_rate": 0.98
+      },
+      {
+        "ens": "rig1.swarmcompute.eth",
+        "jobs_completed": 38,
+        "uptime_seconds": 79200,
+        "work_share": "332.50",
+        "readiness_share": "98.67",
+        "total_payout": "431.17",
+        "poe_success_rate": 0.95
+      },
+      {
+        "ens": "node7.swarmcompute.eth",
+        "jobs_completed": 12,
+        "uptime_seconds": 64800,
+        "work_share": "105.00",
+        "readiness_share": "80.75",
+        "total_payout": "185.75",
+        "poe_success_rate": 1.0
+      },
+      {
+        "ens": "cuda9.swarmcompute.eth",
+        "jobs_completed": 8,
+        "uptime_seconds": 54000,
+        "work_share": "70.00",
+        "readiness_share": "46.63",
+        "total_payout": "116.63",
+        "poe_success_rate": 0.88
+      }
+    ]
+  },
+  "jobs": {
+    "total_submitted": 112,
+    "total_completed": 105,
+    "total_failed": 7,
+    "avg_execution_ms": 2340,
+    "by_task_type": {
+      "swarmview.mri.demo": 72,
+      "swarmview.spine.stenosis": 33
+    }
+  },
+  "clients": {
+    "total_active": 8,
+    "total_spent": "1250.00",
+    "top_clients": [
+      {
+        "ens": "clinic1.swarmvision.eth",
+        "jobs_submitted": 45,
+        "total_spent": "450.00"
+      },
+      {
+        "ens": "imaging.swarmvision.eth",
+        "jobs_submitted": 32,
+        "total_spent": "320.00"
+      },
+      {
+        "ens": "ortho.swarmvision.eth",
+        "jobs_submitted": 20,
+        "total_spent": "200.00"
+      }
+    ]
+  }
+}

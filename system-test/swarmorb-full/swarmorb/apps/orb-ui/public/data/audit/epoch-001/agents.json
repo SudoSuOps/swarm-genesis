@@ -1,0 +1,120 @@
+{
+  "epoch_id": "epoch-001",
+  "agents": [
+    {
+      "ens": "bee23.swarmcompute.eth",
+      "address": "0x1234567890123456789012345678901234567890",
+      "registered_at": "2025-01-01T00:00:00Z",
+      "hardware": {
+        "gpu": "NVIDIA RTX 5090",
+        "vram_gb": 32,
+        "cpu": "AMD Ryzen 9 7950X",
+        "ram_gb": 128
+      },
+      "epoch_stats": {
+        "first_heartbeat": "2025-01-15T00:01:23Z",
+        "last_heartbeat": "2025-01-15T23:58:45Z",
+        "uptime_seconds": 82800,
+        "jobs_completed": 47,
+        "jobs_failed": 1,
+        "poe_submitted": 47,
+        "poe_verified": 46,
+        "avg_execution_ms": 2100
+      },
+      "eligible": true,
+      "eligibility_reason": null
+    },
+    {
+      "ens": "rig1.swarmcompute.eth",
+      "address": "0x2345678901234567890123456789012345678901",
+      "registered_at": "2025-01-02T12:00:00Z",
+      "hardware": {
+        "gpu": "NVIDIA RTX 6000 Ada",
+        "vram_gb": 48,
+        "cpu": "Intel Xeon W-3400",
+        "ram_gb": 256
+      },
+      "epoch_stats": {
+        "first_heartbeat": "2025-01-15T00:05:12Z",
+        "last_heartbeat": "2025-01-15T23:55:33Z",
+        "uptime_seconds": 79200,
+        "jobs_completed": 38,
+        "jobs_failed": 2,
+        "poe_submitted": 38,
+        "poe_verified": 36,
+        "avg_execution_ms": 2450
+      },
+      "eligible": true,
+      "eligibility_reason": null
+    },
+    {
+      "ens": "node7.swarmcompute.eth",
+      "address": "0x3456789012345678901234567890123456789012",
+      "registered_at": "2025-01-05T08:30:00Z",
+      "hardware": {
+        "gpu": "NVIDIA RTX 3090",
+        "vram_gb": 24,
+        "cpu": "AMD Ryzen 7 5800X",
+        "ram_gb": 64
+      },
+      "epoch_stats": {
+        "first_heartbeat": "2025-01-15T06:00:00Z",
+        "last_heartbeat": "2025-01-15T23:59:12Z",
+        "uptime_seconds": 64800,
+        "jobs_completed": 12,
+        "jobs_failed": 0,
+        "poe_submitted": 12,
+        "poe_verified": 12,
+        "avg_execution_ms": 3200
+      },
+      "eligible": true,
+      "eligibility_reason": null
+    },
+    {
+      "ens": "cuda9.swarmcompute.eth",
+      "address": "0x4567890123456789012345678901234567890123",
+      "registered_at": "2025-01-10T14:00:00Z",
+      "hardware": {
+        "gpu": "NVIDIA RTX 4090",
+        "vram_gb": 24,
+        "cpu": "Intel i9-13900K",
+        "ram_gb": 96
+      },
+      "epoch_stats": {
+        "first_heartbeat": "2025-01-15T09:00:00Z",
+        "last_heartbeat": "2025-01-15T23:45:00Z",
+        "uptime_seconds": 54000,
+        "jobs_completed": 8,
+        "jobs_failed": 1,
+        "poe_submitted": 8,
+        "poe_verified": 7,
+        "avg_execution_ms": 2650
+      },
+      "eligible": true,
+      "eligibility_reason": null
+    },
+    {
+      "ens": "micro1.swarmcompute.eth",
+      "address": "0x5678901234567890123456789012345678901234",
+      "registered_at": "2025-01-14T20:00:00Z",
+      "hardware": {
+        "gpu": "NVIDIA RTX 3080",
+        "vram_gb": 10,
+        "cpu": "AMD Ryzen 5 5600X",
+        "ram_gb": 32
+      },
+      "epoch_stats": {
+        "first_heartbeat": "2025-01-15T18:00:00Z",
+        "last_heartbeat": "2025-01-15T23:30:00Z",
+        "uptime_seconds": 19800,
+        "jobs_completed": 0,
+        "jobs_failed": 0,
+        "poe_submitted": 0,
+        "poe_verified": 0,
+        "avg_execution_ms": null
+      },
+      "eligible": false,
+      "eligibility_reason": "Minimum uptime not met (6 hours required)"
+    }
+  ]
+}
