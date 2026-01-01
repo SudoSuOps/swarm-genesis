@@ -1,0 +1,39 @@
+{
+  "type": "EPOCH",
+  "version": "bee-23@1.0",
+  "epoch": 1,
+  "epoch_id": "epoch-0001",
+  "pool": "swarmpool.eth",
+  "controller": "merlin.swarmos.eth",
+  "status": "OPEN",
+  "opened_at": 1735680000,
+  "closes_at": 1735683600,
+  "terms": {
+    "reward_split": {
+      "miners_pct": 75,
+      "hive_pct": 25
+    },
+    "modes": ["SOLO", "PPL"],
+    "currency": "USDC"
+  },
+  "policy": {
+    "no_inbound_ports": true,
+    "proof_required": true,
+    "no_private_data_in_pool": true
+  },
+  "stats": {
+    "jobs_published": 0,
+    "jobs_completed": 0,
+    "total_reward": "0.00",
+    "total_compute_seconds": 0
+  },
+  "links": {
+    "genesis_pool_snapshot_cid": "ipfs://REPLACE_WITH_GENESIS_CID",
+    "manifesto_cid": "ipfs://REPLACE_WITH_MANIFESTO_CID"
+  },
+  "signing": {
+    "did": "ens:merlin.swarmos.eth",
+    "payload_hash": "sha256:REPLACE_AFTER_SIGN",
+    "signature": "eip191:0xREPLACE_AFTER_SIGN"
+  }
+}
